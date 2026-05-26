@@ -23,13 +23,17 @@ export default function PlayerBar() {
   useEffect(() => {
     if (!audioRef.current) {
       audioRef.current = new Audio();
+      audioRef.current.crossOrigin = 'anonymous';
     }
     const audio = audioRef.current;
 
     const onTimeUpdate = () => setStoreCurrentTime(audio.currentTime);
     const onDurationChange = () => setStoreDuration(audio.duration);
     const onEnded = () => nextTrack();
-    const onError = () => setPlaying(false);
+    const onError = () => {
+      console.error('Audio error:', audio.error?.code, audio.error?.message);
+      setPlaying(false);
+    };
 
     audio.addEventListener('timeupdate', onTimeUpdate);
     audio.addEventListener('durationchange', onDurationChange);

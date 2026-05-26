@@ -8,15 +8,19 @@ export function getAnalyser() {
 
 export function initAudioBridge(audio: HTMLAudioElement) {
   if (sourceNode) return;
-  const ctx = new AudioContext();
-  const a = ctx.createAnalyser();
-  a.fftSize = 256;
-  const src = ctx.createMediaElementSource(audio);
-  src.connect(a);
-  a.connect(ctx.destination);
-  audioCtx = ctx;
-  analyser = a;
-  sourceNode = src;
+  try {
+    const ctx = new AudioContext();
+    const a = ctx.createAnalyser();
+    a.fftSize = 256;
+    const src = ctx.createMediaElementSource(audio);
+    src.connect(a);
+    a.connect(ctx.destination);
+    audioCtx = ctx;
+    analyser = a;
+    sourceNode = src;
+  } catch (e) {
+    console.warn('Audio bridge init failed (cross-origin?), visualization disabled:', e);
+  }
 }
 
 export function resumeAudioContext() {
