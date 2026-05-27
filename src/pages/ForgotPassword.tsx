@@ -24,7 +24,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '40px auto' }}>
+    <div style={{ maxWidth: 400, margin: '24px auto' }}>
       <div className="card" style={{ position: 'relative', overflow: 'hidden' }}>
         <div style={{
           position: 'absolute', top: '-40%', right: '-20%', width: 200, height: 200,

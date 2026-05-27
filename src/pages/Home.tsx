@@ -5,41 +5,55 @@ import { Track, User } from '../types';
 import TrackCard from '../components/TrackCard';
 import Tilt from '../components/Tilt';
 import { useAuthStore } from '../services/store';
+import { useMediaQuery } from '../services/useMediaQuery';
 import { Music, Users, ClipboardList, BarChart3, UserPlus, UserCheck, Headphones } from 'lucide-react';
 
 export default function Home() {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState('date');
-  const { isAuthenticated } = useAuthStore();
+  const [search, setSearch] = useState('');
+  const { isAuthenticated, user } = useAuthStore();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [suggestedUsers, setSuggestedUsers] = useState<any[]>([]);
   const [suggestedTracks, setSuggestedTracks] = useState<Track[]>([]);
   const [recsLoading, setRecsLoading] = useState(true);
   const [followingUsers, setFollowingUsers] = useState<Set<string>>(new Set());
   const [followLoading, setFollowLoading] = useState<string | null>(null);
+  const [recsKey, setRecsKey] = useState(0);
 
   useEffect(() => {
-    api.getTracks({ page: 1, sort }).then((res) => {
+    api.getTracks({ page: 1, sort, search: search || undefined }).then((res) => {
       setTracks(res.tracks);
     }).catch(() => {}).finally(() => setLoading(false));
-  }, [sort]);
+  }, [sort, search]);
 
   useEffect(() => {
-    if (!isAuthenticated) { setRecsLoading(false); return; }
+    if (!isAuthenticated || !user?.id) { setRecsLoading(false); return; }
     api.getRecommendations().then((r) => {
       setSuggestedUsers(r.users);
       setSuggestedTracks(r.tracks);
     }).catch(() => {}).finally(() => setRecsLoading(false));
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user?.id, recsKey]);
 
-  const handleFollow = async (e: React.MouseEvent, userId: string) => {
+  useEffect(() => {
+    if (!isAuthenticated || !user?.id) return;
+    api.getFollowing(user.id).then((list) => {
+      setFollowingUsers(new Set(list.map((u: any) => u.id)));
+    }).catch(() => {});
+  }, [isAuthenticated, user?.id]);
+
+  const refreshRecs = () => setRecsKey((k) => k + 1);
+
+  const handleFollow = async (e: React.MouseEvent, targetId: string) => {
     e.preventDefault();
     e.stopPropagation();
     if (followLoading) return;
-    setFollowLoading(userId);
+    setFollowLoading(targetId);
     try {
-      await api.followUser(userId);
-      setFollowingUsers((prev) => new Set(prev).add(userId));
+      await api.followUser(targetId);
+      setFollowingUsers((prev) => new Set(prev).add(targetId));
+      refreshRecs();
     } catch {}
     setFollowLoading(null);
   };
@@ -63,16 +77,16 @@ export default function Home() {
           transform-origin: bottom;
         }
       `}</style>
-      <div style={{
-        borderRadius: 16, marginBottom: 28, overflow: 'hidden', position: 'relative',
-      }}>
         <div style={{
-          padding: '40px 32px',
-          background: 'linear-gradient(135deg, #1a0a2e 0%, #2d1b3a 25%, #1a1a2e 50%, #2d1b3a 75%, #1a0a2e 100%)',
-          backgroundSize: '400% 400%',
-          animation: 'gradientShift 12s ease infinite',
-          position: 'relative',
+          borderRadius: isMobile ? 12 : 16, marginBottom: isMobile ? 20 : 28, overflow: 'hidden', position: 'relative',
         }}>
+          <div style={{
+            padding: isMobile ? '24px 20px' : '40px 32px',
+            background: 'linear-gradient(135deg, #1a0a2e 0%, #2d1b3a 25%, #1a1a2e 50%, #2d1b3a 75%, #1a0a2e 100%)',
+            backgroundSize: '400% 400%',
+            animation: 'gradientShift 12s ease infinite',
+            position: 'relative',
+          }}>
           <div style={{
             position: 'absolute', top: '-60%', right: '-5%', width: 350, height: 350,
             borderRadius: '50%', background: 'rgba(139,92,246,0.15)',
@@ -149,8 +163,8 @@ export default function Home() {
       {!isAuthenticated ? (
         <>
           <div style={{
-            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: 16, marginBottom: 28,
+            display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: isMobile ? 10 : 16, marginBottom: 28,
           }}>
             <div className="card" style={{ padding: 24, textAlign: 'center' }}>
               <div style={{
@@ -216,8 +230,25 @@ export default function Home() {
         </>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', gap: isMobile ? 16 : 24, flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start' }}>
+            <div style={{ flex: 1, minWidth: 0, order: isMobile ? 2 : 0 }}>
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    placeholder="Buscar sets..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    style={{ flex: 1, minWidth: 0 }}
+                  />
+                  {search && (
+                    <button className="btn btn-secondary btn-sm" onClick={() => setSearch('')}
+                      style={{ flexShrink: 0 }}>
+                      Limpiar
+                    </button>
+                  )}
+                </div>
+              </div>
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 marginBottom: 16, flexWrap: 'wrap', gap: 8,
@@ -276,7 +307,7 @@ export default function Home() {
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {tracks.map((track, i) => (
-                    <TrackCard key={track.id} track={track} index={i} />
+                    <TrackCard key={track.id} track={track} index={i} onLike={refreshRecs} />
                   ))}
                 </div>
               )}
@@ -284,8 +315,8 @@ export default function Home() {
 
             {!recsLoading && suggestedUsers.length > 0 && (
               <div className="glass" style={{
-                width: 260, flexShrink: 0, borderRadius: 12, padding: 16,
-                position: 'sticky', top: 80,
+                width: isMobile ? '100%' : 260, flexShrink: 0, borderRadius: 12, padding: 16,
+                position: isMobile ? 'static' : 'sticky', top: 80, order: isMobile ? 1 : 0,
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
                   <UserPlus size={16} style={{ color: 'var(--accent)' }} />
@@ -359,7 +390,7 @@ export default function Home() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {suggestedTracks.map((track, i) => (
-                  <TrackCard key={track.id} track={track} index={i} />
+                  <TrackCard key={track.id} track={track} index={i} onLike={refreshRecs} />
                 ))}
               </div>
             </div>

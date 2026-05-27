@@ -1,4 +1,5 @@
 import { usePlayerStore } from '../services/store';
+import { useMediaQuery } from '../services/useMediaQuery';
 import { Music, X, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import Tilt from './Tilt';
 
@@ -9,6 +10,7 @@ interface Props {
 
 export default function QueuePanel({ visible, onToggle }: Props) {
   const { queue, currentTrack, removeFromQueue, setTrack, setPlaying } = usePlayerStore();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   if (!currentTrack) return null;
 
@@ -18,7 +20,7 @@ export default function QueuePanel({ visible, onToggle }: Props) {
   if (!visible) {
     return (
       <div style={{
-        position: 'fixed', top: 66, right: 8, zIndex: 91,
+        position: 'fixed', top: isMobile ? 56 : 66, right: 8, zIndex: 91,
       }}>
         <Tilt as="button" onClick={onToggle} tiltAmount={6}
           title="Mostrar cola"
@@ -35,12 +37,26 @@ export default function QueuePanel({ visible, onToggle }: Props) {
   }
 
   return (
-    <div style={{
-      position: 'fixed', top: 56, right: 0, bottom: 68,
-      width: 300, zIndex: 90,
-      background: 'var(--bg2)', borderLeft: '1px solid var(--border)',
-      display: 'flex', flexDirection: 'column',
-    }}>
+    <>
+      {isMobile && (
+        <div onClick={onToggle} style={{
+          position: 'fixed', inset: 0, zIndex: 89,
+          background: 'rgba(0,0,0,0.6)',
+        }} />
+      )}
+      <div style={{
+        position: 'fixed',
+        top: isMobile ? 56 : 56,
+        right: 0,
+        bottom: isMobile ? 0 : 68,
+        width: isMobile ? '100%' : 300,
+        maxHeight: isMobile ? 'calc(100vh - 56px)' : undefined,
+        zIndex: 90,
+        background: 'var(--bg2)',
+        borderLeft: '1px solid var(--border)',
+        display: 'flex', flexDirection: 'column',
+        ...(isMobile ? { borderRadius: '12px 0 0 0' } : {}),
+      }}>
       <div style={{
         padding: '10px 14px', borderBottom: '1px solid var(--border)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -143,5 +159,6 @@ export default function QueuePanel({ visible, onToggle }: Props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

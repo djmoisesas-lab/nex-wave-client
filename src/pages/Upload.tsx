@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuthStore } from '../services/store';
 import { useToastStore } from '../services/toast';
+import { useMediaQuery } from '../services/useMediaQuery';
 import { useEffect } from 'react';
 import { Upload as UploadIcon, Music, FolderOpen } from 'lucide-react';
 
@@ -10,6 +11,7 @@ export default function Upload() {
   const { isAuthenticated } = useAuthStore();
   const { toast } = useToastStore();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     if (!isAuthenticated) navigate('/login');
@@ -111,7 +113,7 @@ export default function Upload() {
             style={{
               border: '2px dashed var(--border)',
               borderRadius: 'var(--radius)',
-              padding: 40,
+              padding: isMobile ? 24 : 40,
               textAlign: 'center',
               cursor: 'pointer',
               transition: 'border-color 0.2s, background 0.2s',
@@ -121,16 +123,16 @@ export default function Upload() {
           >
             {file ? (
               <div>
-                <Music size={32} style={{ marginBottom: 8 }} />
-                <div style={{ fontWeight: 600 }}>{file.name}</div>
+                <Music size={isMobile ? 24 : 32} style={{ marginBottom: 8 }} />
+                <div style={{ fontWeight: 600, fontSize: isMobile ? 13 : undefined }}>{file.name}</div>
                 <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 4 }}>
                   {formatSize(file.size)}
                 </div>
               </div>
             ) : (
               <div>
-                <FolderOpen size={32} style={{ marginBottom: 8 }} />
-                <div style={{ fontWeight: 600 }}>Haz clic para seleccionar</div>
+                <FolderOpen size={isMobile ? 24 : 32} style={{ marginBottom: 8 }} />
+                <div style={{ fontWeight: 600, fontSize: isMobile ? 13 : undefined }}>Haz clic para seleccionar</div>
                 <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 4 }}>
                   MP3, WAV, FLAC, AAC, OGG, M4A · Max 500 MB
                 </div>
@@ -144,14 +146,14 @@ export default function Upload() {
               onChange={(e) => setFile(e.target.files?.[0] || null)}
             />
           </div>
-        )}
+          )}
 
         <div
           onClick={() => coverRef.current?.click()}
           style={{
             border: '2px dashed var(--border)',
             borderRadius: 'var(--radius)',
-            padding: 20,
+            padding: isMobile ? 14 : 20,
             textAlign: 'center',
             cursor: 'pointer',
             transition: 'border-color 0.2s',

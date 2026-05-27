@@ -16,8 +16,8 @@ export interface UpdateProfilePayload {
   displayName?: string;
   bio?: string;
   socialInstagram?: string;
-  socialSoundcloud?: string;
-  socialMixcloud?: string;
+  socialTiktok?: string;
+  socialFacebook?: string;
   isPublic?: boolean;
 }
 

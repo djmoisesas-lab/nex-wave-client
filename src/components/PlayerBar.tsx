@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { usePlayerStore, useAuthStore } from '../services/store';
 import { api } from '../services/api';
+import { useMediaQuery } from '../services/useMediaQuery';
 import { initAudioBridge, getAnalyser, resumeAudioContext } from '../services/audio-bridge';
 import Tilt from './Tilt';
 import { Play, Pause, SkipBack, SkipForward, VolumeX, Volume1, Volume2, X, Disc3 } from 'lucide-react';
@@ -12,6 +13,7 @@ const BAR_COUNT = 128;
 export default function PlayerBar() {
   const { currentTrack, isPlaying, setPlaying, nextTrack, prevTrack, volume, setVolume, currentTime, duration, setCurrentTime: setStoreCurrentTime, setDuration: setStoreDuration, setFrequencyData, pendingSeek, seekTo, queue, removeFromQueue } = usePlayerStore();
   const { isAuthenticated } = useAuthStore();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const animFrameRef = useRef<number>();
   const currentSrcRef = useRef('');
@@ -205,7 +207,7 @@ export default function PlayerBar() {
     return (
       <div className="glass player-glow" style={{
         position: 'fixed', bottom: 0, left: 0, right: 0,
-        padding: '12px 20px', zIndex: 200,
+        padding: isMobile ? '10px 12px' : '12px 20px', zIndex: 200,
         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
       }}>
         <span style={{ fontSize: 13, color: 'var(--text2)' }}>Selecciona un track para reproducir</span>
@@ -227,10 +229,10 @@ export default function PlayerBar() {
   return (
     <div className="glass player-glow" style={{
       position: 'fixed', bottom: 0, left: 0, right: 0,
-      padding: '10px 20px', zIndex: 200,
+      padding: isMobile ? '6px 8px' : '10px 20px', zIndex: 200,
     }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        {currentTrack.cover_url ? (
+      <div className="container" style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 12 }}>
+        {!isMobile && (currentTrack.cover_url ? (
           <motion.div
             animate={{ rotate: isPlaying ? 360 : 0 }}
             transition={{ duration: 4, repeat: Infinity, ease: 'linear', repeatDelay: isPlaying ? 0 : 999 }}
@@ -259,68 +261,71 @@ export default function PlayerBar() {
               background: 'var(--bg2)', border: '2px solid rgba(0,0,0,0.3)',
             }} />
           </motion.div>
-        )}
+        ))}
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 200 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 8, minWidth: isMobile ? 'auto' : 200 }}>
           <Tilt
             as="button"
             onClick={() => prevTrack()}
             className="play-btn play-btn-inactive"
-            style={{ width: 32, height: 32, fontSize: 14 }}
+            style={{ width: isMobile ? 28 : 32, height: isMobile ? 28 : 32, fontSize: 14 }}
             tiltAmount={6}
           >
-            <SkipBack size={18} />
+            <SkipBack size={isMobile ? 14 : 18} />
           </Tilt>
           <Tilt
             as="button"
             onClick={togglePlay}
             className="play-btn play-btn-active"
             style={{
-              width: 40, height: 40,
+              width: isMobile ? 34 : 40, height: isMobile ? 34 : 40,
               transition: 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s',
               transform: isPlaying ? 'scale(1)' : 'scale(0.92)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}
             tiltAmount={8}
           >
-            {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+            {isPlaying ? <Pause size={isMobile ? 16 : 20} /> : <Play size={isMobile ? 16 : 20} />}
           </Tilt>
           <Tilt
             as="button"
             onClick={() => nextTrack()}
             className="play-btn play-btn-inactive"
-            style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{ width: isMobile ? 28 : 32, height: isMobile ? 28 : 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             tiltAmount={6}
           >
-            <SkipForward size={18} />
+            <SkipForward size={isMobile ? 14 : 18} />
           </Tilt>
           <div style={{ minWidth: 0 }}>
             <Link to={`/track/${currentTrack.id}`} style={{
-              color: 'var(--text)', fontSize: 14, fontWeight: 600,
+              color: 'var(--text)', fontSize: isMobile ? 12 : 14, fontWeight: 600,
               display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+              maxWidth: isMobile ? 80 : 200,
             }}>
               {currentTrack.title}
             </Link>
-            <span style={{ color: 'var(--text2)', fontSize: 12 }}>
-              {currentTrack.artist || currentTrack.display_name || currentTrack.username}
-            </span>
+            {!isMobile && (
+              <span style={{ color: 'var(--text2)', fontSize: 12 }}>
+                {currentTrack.artist || currentTrack.display_name || currentTrack.username}
+              </span>
+            )}
           </div>
         </div>
 
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: 11, color: 'var(--text2)', minWidth: 32, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 10, minWidth: 0 }}>
+          <span style={{ fontSize: 10, color: 'var(--text2)', minWidth: 24, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
             {formatTime(Math.max(0, currentTime))}
           </span>
           <div
             ref={seekRef}
             onMouseDown={handleMouseDown}
             style={{
-              flex: 1, height: 4, background: 'var(--bg4)', borderRadius: 4,
+              flex: 1, height: isMobile ? 3 : 4, background: 'var(--bg4)', borderRadius: 4,
               cursor: 'pointer', position: 'relative',
               transition: 'height 0.15s',
             }}
             onMouseEnter={(e) => e.currentTarget.style.height = '6px'}
-            onMouseLeave={(e) => e.currentTarget.style.height = '4px'}
+            onMouseLeave={(e) => e.currentTarget.style.height = isMobile ? '3px' : '4px'}
           >
             <div style={{
               height: '100%',
@@ -329,59 +334,51 @@ export default function PlayerBar() {
               width: `${isDragging ? (dragTime / duration) * 100 : progress}%`,
               transition: isDragging ? 'none' : 'width 0.15s linear',
             }} />
-            <div style={{
-              position: 'absolute', top: '50%', left: `${isDragging || progress > 0 ? (isDragging ? dragTime / duration * 100 : progress) : 0}%`,
-              width: 14, height: 14, borderRadius: '50%',
-              background: 'var(--accent)',
-              boxShadow: '0 0 8px var(--accent-glow)',
-              transform: 'translate(-50%, -50%)',
-              transition: isDragging ? 'none' : 'left 0.15s linear',
-              opacity: isDragging ? 1 : 0,
-              pointerEvents: 'none',
-            }} />
           </div>
-          <span style={{ fontSize: 11, color: 'var(--text2)', minWidth: 32, fontVariantNumeric: 'tabular-nums' }}>
+          <span style={{ fontSize: 10, color: 'var(--text2)', minWidth: 24, fontVariantNumeric: 'tabular-nums' }}>
             -{formatTime(Math.max(0, duration - currentTime))}
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span
-            onClick={() => usePlayerStore.getState().toggleMute()}
-            style={{ color: 'var(--text2)', width: 20, textAlign: 'center', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          >
-            {volume === 0 ? <VolumeX size={16} /> : volume < 0.5 ? <Volume1 size={16} /> : <Volume2 size={16} />}
-          </span>
-          <div style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}>
-            <div style={{
-              position: 'absolute', top: '50%', left: 0, right: 0,
-              height: 4, transform: 'translateY(-50%)', borderRadius: 4, pointerEvents: 'none',
-              background: `linear-gradient(to right, var(--accent) ${volume * 100}%, var(--bg4) ${volume * 100}%)`,
-            }} />
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              value={volume}
-              onChange={(e) => setVolume(parseFloat(e.target.value))}
-              style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', margin: 0, background: 'transparent' }}
-            />
-          </div>
-          <span style={{ fontSize: 10, color: 'var(--text2)', width: 24, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-            {Math.round(volume * 100)}%
-          </span>
+        {!isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span
+              onClick={() => usePlayerStore.getState().toggleMute()}
+              style={{ color: 'var(--text2)', width: 20, textAlign: 'center', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {volume === 0 ? <VolumeX size={16} /> : volume < 0.5 ? <Volume1 size={16} /> : <Volume2 size={16} />}
+            </span>
+            <div style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}>
+              <div style={{
+                position: 'absolute', top: '50%', left: 0, right: 0,
+                height: 4, transform: 'translateY(-50%)', borderRadius: 4, pointerEvents: 'none',
+                background: `linear-gradient(to right, var(--accent) ${volume * 100}%, var(--bg4) ${volume * 100}%)`,
+              }} />
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume}
+                onChange={(e) => setVolume(parseFloat(e.target.value))}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', margin: 0, background: 'transparent' }}
+              />
+            </div>
+            <span style={{ fontSize: 10, color: 'var(--text2)', width: 24, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+              {Math.round(volume * 100)}%
+            </span>
 
-          <button
-            onClick={() => { setPlaying(false); setDismissed(true); }}
-            style={{
-              background: 'none', border: 'none', color: 'var(--text2)',
-              cursor: 'pointer', padding: '2px 6px', opacity: 0.5, display: 'flex',
-            }}
-          >
-            <X size={16} />
-          </button>
-        </div>
+            <button
+              onClick={() => { setPlaying(false); setDismissed(true); }}
+              style={{
+                background: 'none', border: 'none', color: 'var(--text2)',
+                cursor: 'pointer', padding: '2px 6px', opacity: 0.5, display: 'flex',
+              }}
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

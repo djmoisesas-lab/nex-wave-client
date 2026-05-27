@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { Track, Playlist } from '../types';
 import TrackCard from '../components/TrackCard';
 import { useAuthStore } from '../services/store';
+import { useMediaQuery } from '../services/useMediaQuery';
 import { Music, Headphones, Bell, BellOff } from 'lucide-react';
 import { useToastStore } from '../services/toast';
 
@@ -20,6 +21,7 @@ export default function Profile() {
   const [recentPlays, setRecentPlays] = useState<Track[]>([]);
   const { isAuthenticated, user } = useAuthStore();
   const { toast } = useToastStore();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const isOwner = user?.id === id;
 
@@ -63,13 +65,13 @@ export default function Profile() {
 
   return (
     <div>
-      <div style={{
-        borderRadius: 16, overflow: 'hidden', marginBottom: 24,
-        background: 'linear-gradient(135deg, #1e1028 0%, #2d1b3a 50%, #1a0a2e 100%)',
-        position: 'relative',
-      }}>
         <div style={{
-          height: 140, position: 'relative', overflow: 'hidden',
+          borderRadius: isMobile ? 12 : 16, overflow: 'hidden', marginBottom: 24,
+          background: 'linear-gradient(135deg, #1e1028 0%, #2d1b3a 50%, #1a0a2e 100%)',
+          position: 'relative',
+        }}>
+          <div style={{
+            height: isMobile ? 100 : 140, position: 'relative', overflow: 'hidden',
           background: profile.banner_url
             ? `url(${profile.banner_url}) center/cover no-repeat`
             : 'linear-gradient(135deg, rgba(139,92,246,0.4), rgba(99,102,241,0.2))',
@@ -88,16 +90,16 @@ export default function Profile() {
           )}
         </div>
 
-        <div style={{ padding: '0 24px 24px', position: 'relative' }}>
+        <div style={{ padding: isMobile ? '0 16px 16px' : '0 24px 24px', position: 'relative' }}>
           <div style={{
-            display: 'flex', alignItems: 'flex-end', gap: 20, marginTop: -40, flexWrap: 'wrap',
+            display: 'flex', alignItems: 'flex-end', gap: isMobile ? 12 : 20, marginTop: isMobile ? -24 : -40, flexWrap: 'wrap',
           }}>
             <div style={{
-              width: 96, height: 96, borderRadius: 16, overflow: 'hidden',
+              width: isMobile ? 72 : 96, height: isMobile ? 72 : 96, borderRadius: isMobile ? 12 : 16, overflow: 'hidden',
               border: '3px solid rgba(255,255,255,0.15)',
               background: 'linear-gradient(135deg, var(--accent), #6366f1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 36, fontWeight: 800, color: 'white', flexShrink: 0,
+              fontSize: isMobile ? 28 : 36, fontWeight: 800, color: 'white', flexShrink: 0,
               boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
             }}>
               {profile.avatar_url ? (
@@ -106,79 +108,81 @@ export default function Profile() {
                 profile.display_name?.[0]?.toUpperCase() || profile.username?.[0]?.toUpperCase()
               )}
             </div>
-            <div style={{ flex: 1, paddingTop: 40 }}>
+            <div style={{ flex: 1, paddingTop: isMobile ? 24 : 40 }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
                 <div>
-                  <h1 style={{ fontSize: 26, fontWeight: 800, color: 'white', marginBottom: 2 }}>
+                  <h1 style={{ fontSize: isMobile ? 20 : 26, fontWeight: 800, color: 'white', marginBottom: 2 }}>
                     {profile.display_name || profile.username}
                   </h1>
-                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, fontWeight: 500 }}>
+                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: isMobile ? 12 : 14, fontWeight: 500 }}>
                     @{profile.username}
                   </p>
                 </div>
-                {isOwner && (
-                  <Link to="/settings" style={{
-                    padding: '8px 20px', borderRadius: 8, fontWeight: 600, fontSize: 13,
-                    background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)',
-                    backdropFilter: 'blur(8px)', textDecoration: 'none',
-                    transition: 'all 0.2s',
-                  }}>
-                    Editar perfil
-                  </Link>
-                )}
-                {isAuthenticated && !isOwner && (
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    <button
-                      onClick={handleFollow}
-                      disabled={followLoading}
-                      style={{
-                        padding: '8px 20px', borderRadius: 8, border: 'none', fontWeight: 600, fontSize: 13,
-                        cursor: followLoading ? 'default' : 'pointer',
-                        background: following ? 'rgba(255,255,255,0.1)' : 'var(--accent)',
-                        color: following ? 'rgba(255,255,255,0.8)' : 'white',
-                        backdropFilter: 'blur(8px)',
-                        transition: 'all 0.2s',
-                      }}
-                    >
-                      {followLoading ? '...' : following ? 'Siguiendo' : 'Seguir'}
-                    </button>
-                    {following && (
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {isOwner && (
+                    <Link to="/settings" style={{
+                      padding: '6px 14px', borderRadius: 8, fontWeight: 600, fontSize: isMobile ? 11 : 13,
+                      background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)',
+                      backdropFilter: 'blur(8px)', textDecoration: 'none',
+                      transition: 'all 0.2s', whiteSpace: 'nowrap',
+                    }}>
+                      Editar perfil
+                    </Link>
+                  )}
+                  {isAuthenticated && !isOwner && (
+                    <>
                       <button
-                        onClick={async () => {
-                          try {
-                            const r = await api.toggleNotifyOnUpload(id!);
-                            setNotifyOnUpload(r.notify_on_upload);
-                          } catch (e: any) {
-                            toast(e.message || 'Error al cambiar notificaci\u00f3n', 'error');
-                          }
-                        }}
+                        onClick={handleFollow}
+                        disabled={followLoading}
                         style={{
-                          padding: '8px 12px', borderRadius: 8, border: 'none', cursor: 'pointer',
-                          background: 'rgba(255,255,255,0.1)', color: notifyOnUpload ? '#f59e0b' : 'rgba(255,255,255,0.8)',
+                          padding: isMobile ? '6px 12px' : '8px 20px', borderRadius: 8, border: 'none', fontWeight: 600, fontSize: isMobile ? 11 : 13,
+                          cursor: followLoading ? 'default' : 'pointer',
+                          background: following ? 'rgba(255,255,255,0.1)' : 'var(--accent)',
+                          color: following ? 'rgba(255,255,255,0.8)' : 'white',
                           backdropFilter: 'blur(8px)',
-                          display: 'flex', alignItems: 'center',
+                          transition: 'all 0.2s', whiteSpace: 'nowrap',
                         }}
-                        title={notifyOnUpload ? 'Notificaciones activadas' : 'Activar notificaciones'}
                       >
-                        {notifyOnUpload ? <Bell size={15} fill='#f59e0b' /> : <BellOff size={15} />}
+                        {followLoading ? '...' : following ? 'Siguiendo' : 'Seguir'}
                       </button>
-                    )}
-                  </div>
-                )}
+                      {following && (
+                        <button
+                          onClick={async () => {
+                            try {
+                              const r = await api.toggleNotifyOnUpload(id!);
+                              setNotifyOnUpload(r.notify_on_upload);
+                            } catch (e: any) {
+                              toast(e.message || 'Error al cambiar notificaci\u00f3n', 'error');
+                            }
+                          }}
+                          style={{
+                            padding: isMobile ? '6px 10px' : '8px 12px', borderRadius: 8, border: 'none', cursor: 'pointer',
+                            background: 'rgba(255,255,255,0.1)', color: notifyOnUpload ? '#f59e0b' : 'rgba(255,255,255,0.8)',
+                            backdropFilter: 'blur(8px)',
+                            display: 'flex', alignItems: 'center',
+                          }}
+                          title={notifyOnUpload ? 'Notificaciones activadas' : 'Activar notificaciones'}
+                        >
+                          {notifyOnUpload ? <Bell size={14} fill='#f59e0b' /> : <BellOff size={14} />}
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 24, marginTop: 14 }}>
+              <div style={{ display: 'flex', gap: isMobile ? 16 : 24, marginTop: 10 }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 20, fontWeight: 800, color: 'white' }}>{tracks.length}</div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>TRACKS</div>
+                  <div style={{ fontSize: isMobile ? 16 : 20, fontWeight: 800, color: 'white' }}>{tracks.length}</div>
+                  <div style={{ fontSize: isMobile ? 10 : 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>TRACKS</div>
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 20, fontWeight: 800, color: 'white' }}>{profile.followers_count || 0}</div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>SEGUIDORES</div>
+                  <div style={{ fontSize: isMobile ? 16 : 20, fontWeight: 800, color: 'white' }}>{profile.followers_count || 0}</div>
+                  <div style={{ fontSize: isMobile ? 10 : 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>SEGUIDORES</div>
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 20, fontWeight: 800, color: 'white' }}>{profile.following_count || 0}</div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>SIGUIENDO</div>
+                  <div style={{ fontSize: isMobile ? 16 : 20, fontWeight: 800, color: 'white' }}>{profile.following_count || 0}</div>
+                  <div style={{ fontSize: isMobile ? 10 : 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>SIGUIENDO</div>
                 </div>
               </div>
             </div>
@@ -190,7 +194,7 @@ export default function Profile() {
             </p>
           )}
 
-          {(profile.social_instagram || profile.social_soundcloud || profile.social_mixcloud) && (
+          {(profile.social_instagram || profile.social_tiktok || profile.social_facebook) && (
             <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
               {profile.social_instagram && (
                 <a href={`https://instagram.com/${profile.social_instagram}`} target="_blank" rel="noopener noreferrer" style={{
@@ -206,8 +210,8 @@ export default function Profile() {
                   Instagram
                 </a>
               )}
-              {profile.social_soundcloud && (
-                <a href={`https://soundcloud.com/${profile.social_soundcloud}`} target="_blank" rel="noopener noreferrer" style={{
+              {profile.social_tiktok && (
+                <a href={`https://tiktok.com/@${profile.social_tiktok}`} target="_blank" rel="noopener noreferrer" style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   padding: '6px 14px', borderRadius: 8, fontSize: 13,
                   background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)',
@@ -216,12 +220,12 @@ export default function Profile() {
                 }}
                   onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
                   onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.56 8.87V17h8.83a1.5 1.5 0 0 0 1.5-1.5v-5.16a1.5 1.5 0 0 0-1.5-1.5h-1.65V7.62a3.09 3.09 0 0 0-3.79-3c-1.22.22-2.12 1.2-2.4 2.35-.08.33-.12.67-.12 1.01v.88ZM2 12.88v4.02a.5.5 0 0 0 .5.5h1.67v-5.02H2.5a.5.5 0 0 0-.5.5Zm3.33-1.67v6.19a.5.5 0 0 0 .5.5h1.67v-7.19H5.83a.5.5 0 0 0-.5.5Zm3.34-.38v7.07a.5.5 0 0 0 .5.5h1.67V11.2h-1.67a.5.5 0 0 0-.5.5Z"/></svg>
-                  SoundCloud
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.9 2.89 2.89 0 0 1-2.88-2.89 2.89 2.89 0 0 1 2.88-2.89c.29 0 .57.04.84.1v-3.5a6.37 6.37 0 0 0-.84-.06A6.34 6.34 0 0 0 3.4 15.6a6.34 6.34 0 0 0 6.35 6.34 6.34 6.34 0 0 0 6.35-6.34V8.75a8.28 8.28 0 0 0 4.77 1.49v-3.5a4.82 4.82 0 0 1-1.28-.05z"/></svg>
+                  TikTok
                 </a>
               )}
-              {profile.social_mixcloud && (
-                <a href={`https://mixcloud.com/${profile.social_mixcloud}`} target="_blank" rel="noopener noreferrer" style={{
+              {profile.social_facebook && (
+                <a href={`https://facebook.com/${profile.social_facebook}`} target="_blank" rel="noopener noreferrer" style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   padding: '6px 14px', borderRadius: 8, fontSize: 13,
                   background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)',
@@ -230,8 +234,8 @@ export default function Profile() {
                 }}
                   onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
                   onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.6 14.5a1.9 1.9 0 0 0 1.9-1.9v-5a1.9 1.9 0 0 0-3.8 0v5a1.9 1.9 0 0 0 1.9 1.9Zm5.6 0a1.9 1.9 0 0 0 1.9-1.9v-5a1.9 1.9 0 1 0-3.8 0v5A1.9 1.9 0 0 0 8.2 14.5Zm28.4-6.9v5a1.9 1.9 0 0 1-3.8 0v-5a1.9 1.9 0 1 1 3.8 0Zm5.6 0v5a1.9 1.9 0 1 1-3.8 0v-5a1.9 1.9 0 1 1 3.8 0Zm5.6 0v5a1.9 1.9 0 1 1-3.8 0v-5a1.9 1.9 0 1 1 3.8 0Z"/></svg>
-                  Mixcloud
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2z"/></svg>
+                  Facebook
                 </a>
               )}
             </div>

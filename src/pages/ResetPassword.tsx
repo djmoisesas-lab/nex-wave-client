@@ -41,7 +41,7 @@ export default function ResetPassword() {
 
   if (!token) {
     return (
-      <div style={{ maxWidth: 400, margin: '40px auto' }}>
+      <div style={{ maxWidth: 400, margin: '24px auto' }}>
         <div className="card" style={{ textAlign: 'center', padding: 32 }}>
           <p style={{ color: 'var(--text2)', marginBottom: 16 }}>Enlace inválido. No se encontró el token de recuperación.</p>
           <Link to="/forgot-password" className="btn btn-primary gradient-btn" style={{ display: 'inline-flex', padding: '10px 20px' }}>Solicitar nuevo enlace</Link>
@@ -51,7 +51,7 @@ export default function ResetPassword() {
   }
 
   return (
-    <div style={{ maxWidth: 400, margin: '40px auto' }}>
+    <div style={{ maxWidth: 400, margin: '24px auto' }}>
       <div className="card" style={{ position: 'relative', overflow: 'hidden' }}>
         <div style={{
           position: 'absolute', top: '-40%', right: '-20%', width: 200, height: 200,

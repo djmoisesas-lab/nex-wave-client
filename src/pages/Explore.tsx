@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { Track } from '../types';
 import TrackCard from '../components/TrackCard';
+import { useMediaQuery } from '../services/useMediaQuery';
 
 export default function Explore() {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -12,6 +13,7 @@ export default function Explore() {
   const [sort, setSort] = useState('date');
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     api.getGenres().then(setGenres).catch(() => {});
@@ -41,7 +43,7 @@ export default function Explore() {
       </div>
 
       <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
-        <div style={{ flex: 1, minWidth: 200 }}>
+        <div style={{ flex: 1, minWidth: isMobile ? '100%' : 200 }}>
           <input
             type="text"
             placeholder="Buscar sets..."
@@ -50,13 +52,13 @@ export default function Explore() {
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
         </div>
-        <select value={selectedGenre} onChange={(e) => { setSelectedGenre(e.target.value); setPage(1); }} style={{ width: 160 }}>
+        <select value={selectedGenre} onChange={(e) => { setSelectedGenre(e.target.value); setPage(1); }} style={{ flex: isMobile ? 1 : undefined, width: isMobile ? undefined : 160, minWidth: isMobile ? 0 : undefined }}>
           <option value="">Todos los géneros</option>
           {genres.map((g) => (
             <option key={g} value={g}>{g}</option>
           ))}
         </select>
-        <select value={sort} onChange={(e) => { setSort(e.target.value); setPage(1); }} style={{ width: 150 }}>
+        <select value={sort} onChange={(e) => { setSort(e.target.value); setPage(1); }} style={{ flex: isMobile ? 1 : undefined, width: isMobile ? undefined : 150, minWidth: isMobile ? 0 : undefined }}>
           <option value="date">Más recientes</option>
           <option value="plays">Más reproducidos</option>
           <option value="likes">Más likeados</option>

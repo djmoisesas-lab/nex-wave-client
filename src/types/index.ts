@@ -7,8 +7,8 @@ export interface User {
   avatar_url: string | null;
   banner_url?: string | null;
   social_instagram: string;
-  social_soundcloud: string;
-  social_mixcloud: string;
+  social_tiktok: string;
+  social_facebook: string;
   is_public: number;
   followers_count?: number;
   following_count?: number;

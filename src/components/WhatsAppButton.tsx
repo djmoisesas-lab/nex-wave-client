@@ -1,17 +1,19 @@
 import { MessageCircle } from 'lucide-react';
+import { useMediaQuery } from '../services/useMediaQuery';
 
 const WHATSAPP_NUMBER = '584123768842';
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 export default function WhatsAppButton() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   return (
     <a
       href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
       style={{
-        position: 'fixed', bottom: 75, right: 12, zIndex: 999,
-        width: 38, height: 38, borderRadius: '50%',
+        position: 'fixed', bottom: isMobile ? 64 : 75, right: 12, zIndex: 999,
+        width: isMobile ? 34 : 38, height: isMobile ? 34 : 38, borderRadius: '50%',
         background: 'rgba(37, 211, 102, 0.85)',
         backdropFilter: 'blur(4px)',
         color: 'white',
@@ -23,7 +25,7 @@ export default function WhatsAppButton() {
       onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(37, 211, 102, 0.85)'; e.currentTarget.style.transform = 'scale(1)'; }}
       title="Soporte"
     >
-      <MessageCircle size={18} />
+      <MessageCircle size={isMobile ? 16 : 18} />
     </a>
   );
 }

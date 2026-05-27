@@ -604,3 +604,27 @@ select {
     gap: 12px;
   }
 }
+
+@media (max-width: 768px) {
+  :root {
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
+
+  h1 { font-size: 22px !important; }
+  h2 { font-size: 16px !important; }
+
+  .hide-mobile { display: none !important; }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  .show-mobile-flex { display: flex !important; }
+}

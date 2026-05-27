@@ -10,9 +10,10 @@ import { Play } from 'lucide-react';
 interface Props {
   track: Track;
   index?: number;
+  onLike?: (trackId: string, liked: boolean) => void;
 }
 
-export default function TrackCard({ track, index = 0 }: Props) {
+export default function TrackCard({ track, index = 0, onLike }: Props) {
   const { setTrack, currentTrack, isPlaying, setPlaying, addToQueue } = usePlayerStore();
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ export default function TrackCard({ track, index = 0 }: Props) {
       } else {
         await api.likeTrack(track.id);
       }
+      onLike?.(track.id, !liked);
     } catch {
       setLiked(liked);
       setLikesCount(likesCount);

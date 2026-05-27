@@ -2,18 +2,20 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuthStore } from '../services/store';
+import { useMediaQuery } from '../services/useMediaQuery';
 
 export default function Settings() {
   const { user, isAuthenticated, loadUser } = useAuthStore();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const fileRef = useRef<HTMLInputElement>(null);
   const bannerRef = useRef<HTMLInputElement>(null);
 
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   const [socialInstagram, setSocialInstagram] = useState('');
-  const [socialSoundcloud, setSocialSoundcloud] = useState('');
-  const [socialMixcloud, setSocialMixcloud] = useState('');
+  const [socialTiktok, setSocialTiktok] = useState('');
+  const [socialFacebook, setSocialFacebook] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
@@ -29,8 +31,8 @@ export default function Settings() {
       setDisplayName(user.display_name || '');
       setBio(user.bio || '');
       setSocialInstagram(user.social_instagram || '');
-      setSocialSoundcloud(user.social_soundcloud || '');
-      setSocialMixcloud(user.social_mixcloud || '');
+      setSocialTiktok(user.social_tiktok || '');
+      setSocialFacebook(user.social_facebook || '');
       setIsPublic(!!user.is_public);
     }
   }, [user, isAuthenticated]);
@@ -66,7 +68,7 @@ export default function Settings() {
         await api.uploadBanner(fd);
       }
       await api.updateProfile({
-        displayName, bio, socialInstagram, socialSoundcloud, socialMixcloud, isPublic,
+        displayName, bio, socialInstagram, socialTiktok, socialFacebook, isPublic,
       });
       await loadUser();
       setMessage('Perfil actualizado');
@@ -93,7 +95,7 @@ export default function Settings() {
         borderRadius: 'var(--radius-sm)', fontSize: 14, textAlign: 'center'
       }}>{message}</div>}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 320px', gap: 20, alignItems: 'start' }}>
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <h3 style={{ fontSize: 15, fontWeight: 700 }}>Información del perfil</h3>
 
@@ -119,18 +121,18 @@ export default function Settings() {
           </div>
 
           <div className="form-group">
-            <label>SoundCloud</label>
+            <label>TikTok</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 12, color: 'var(--text2)' }}>soundcloud.com/</span>
-              <input value={socialSoundcloud} onChange={(e) => setSocialSoundcloud(e.target.value)} placeholder="tu-usuario" style={{ flex: 1 }} />
+              <span style={{ fontSize: 12, color: 'var(--text2)' }}>tiktok.com/@</span>
+              <input value={socialTiktok} onChange={(e) => setSocialTiktok(e.target.value)} placeholder="tu_usuario" style={{ flex: 1 }} />
             </div>
           </div>
 
           <div className="form-group">
-            <label>Mixcloud</label>
+            <label>Facebook</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 12, color: 'var(--text2)' }}>mixcloud.com/</span>
-              <input value={socialMixcloud} onChange={(e) => setSocialMixcloud(e.target.value)} placeholder="tu-usuario" style={{ flex: 1 }} />
+              <span style={{ fontSize: 12, color: 'var(--text2)' }}>facebook.com/</span>
+              <input value={socialFacebook} onChange={(e) => setSocialFacebook(e.target.value)} placeholder="tu_usuario" style={{ flex: 1 }} />
             </div>
           </div>
 
@@ -209,11 +211,11 @@ export default function Settings() {
               </div>
             </div>
             {bio && <p style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.4 }}>{bio}</p>}
-            {(socialInstagram || socialSoundcloud || socialMixcloud) && (
+            {(socialInstagram || socialTiktok || socialFacebook) && (
               <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
                 {socialInstagram && <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'var(--bg3)' }}>📷 Instagram</span>}
-                {socialSoundcloud && <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'var(--bg3)' }}>🎧 SoundCloud</span>}
-                {socialMixcloud && <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'var(--bg3)' }}>☁️ Mixcloud</span>}
+                {socialTiktok && <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'var(--bg3)' }}>🎵 TikTok</span>}
+                {socialFacebook && <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: 'var(--bg3)' }}>👍 Facebook</span>}
               </div>
             )}
           </div>

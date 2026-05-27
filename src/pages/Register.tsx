@@ -27,7 +27,7 @@ export default function Register() {
   };
 
   return (
-    <div style={{ maxWidth: 420, margin: '40px auto' }}>
+    <div style={{ maxWidth: 420, margin: '24px auto' }}>
       <div className="card" style={{ position: 'relative', overflow: 'hidden' }}>
         <div style={{
           position: 'absolute', top: '-30%', left: '-10%', width: 200, height: 200,

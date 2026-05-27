@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { Track, Comment } from '../types';
 import { usePlayerStore, useAuthStore } from '../services/store';
+import { useMediaQuery } from '../services/useMediaQuery';
 import WaveformPlayer from '../components/WaveformPlayer';
 import AddToPlaylistModal from '../components/AddToPlaylistModal';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +16,7 @@ export default function TrackDetail() {
   const [track, setTrack] = useState<Track | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -210,22 +212,19 @@ export default function TrackDetail() {
 
         <div style={{ display: 'flex', gap: 24, marginBottom: 20, flexWrap: 'wrap' }}>
           {track.cover_url && (
-            <div style={{ flexShrink: 0, animation: 'fadeSlideIn 0.4s ease-out' }}>
+            <div style={{ maxWidth: isMobile ? '100%' : undefined, flexShrink: 0, animation: 'fadeSlideIn 0.4s ease-out' }}>
               <div style={{
                 padding: 3, borderRadius: 14,
                 background: 'linear-gradient(135deg, var(--accent), #6366f1, #a78bfa)',
                 boxShadow: '0 0 24px var(--accent-glow), 0 4px 16px rgba(0,0,0,0.3)',
                 transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s',
-              }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.03)'; e.currentTarget.style.boxShadow = '0 0 40px var(--accent-glow), 0 8px 32px rgba(0,0,0,0.4)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 0 24px var(--accent-glow), 0 4px 16px rgba(0,0,0,0.3)'; }}
-              >
+              }}>
                 <img
                   src={track.cover_url}
                   alt={track.title}
                   style={{
-                    maxWidth: '100%', maxHeight: 200, borderRadius: 11,
-                    objectFit: 'contain', display: 'block',
+                    maxWidth: '100%', maxHeight: isMobile ? 160 : 200, borderRadius: 11,
+                    objectFit: 'contain', display: 'block', width: '100%',
                   }}
                 />
               </div>
