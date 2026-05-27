@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuthStore, usePlayerStore } from '../services/store';
 import { api } from '../services/api';
+import { connectNotificationStream, disconnectNotificationStream, onNotification } from '../services/notifications';
 import { Notification } from '../types';
 import Tilt from './Tilt';
 import QueuePanel from './QueuePanel';
@@ -63,11 +64,13 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated) { setNotifications([]); return; }
-    const fetchNotifs = () => api.getNotifications().then(setNotifications).catch(() => {});
-    fetchNotifs();
-    const interval = setInterval(fetchNotifs, 30000);
-    return () => clearInterval(interval);
+    if (!isAuthenticated) { setNotifications([]); disconnectNotificationStream(); return; }
+    api.getNotifications().then(setNotifications).catch(() => {});
+    connectNotificationStream();
+    const unsub = onNotification((n) => {
+      setNotifications((prev) => [n, ...prev]);
+    });
+    return () => { disconnectNotificationStream(); unsub(); };
   }, [isAuthenticated]);
 
   const handleNotifClick = async (n: Notification) => {
