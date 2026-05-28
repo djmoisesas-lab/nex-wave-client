@@ -200,13 +200,12 @@ export default function Profile() {
                 <a href={`https://instagram.com/${profile.social_instagram}`} target="_blank" rel="noopener noreferrer" style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   padding: '6px 14px', borderRadius: 8, fontSize: 13,
-                  background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)',
-                  textDecoration: 'none', transition: 'background 0.2s',
-                  backdropFilter: 'blur(8px)',
+                  background: 'linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d)',
+                  color: 'white', textDecoration: 'none', transition: 'opacity 0.2s',
                 }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.85'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" /><circle cx="17.5" cy="6.5" r="1.5" /></svg>
                   Instagram
                 </a>
               )}
@@ -214,13 +213,12 @@ export default function Profile() {
                 <a href={`https://tiktok.com/@${profile.social_tiktok}`} target="_blank" rel="noopener noreferrer" style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   padding: '6px 14px', borderRadius: 8, fontSize: 13,
-                  background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)',
-                  textDecoration: 'none', transition: 'background 0.2s',
-                  backdropFilter: 'blur(8px)',
+                  background: 'linear-gradient(135deg, #00f2ea, #ff0050)',
+                  color: 'white', textDecoration: 'none', transition: 'opacity 0.2s',
                 }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.9 2.89 2.89 0 0 1-2.88-2.89 2.89 2.89 0 0 1 2.88-2.89c.29 0 .57.04.84.1v-3.5a6.37 6.37 0 0 0-.84-.06A6.34 6.34 0 0 0 3.4 15.6a6.34 6.34 0 0 0 6.35 6.34 6.34 6.34 0 0 0 6.35-6.34V8.75a8.28 8.28 0 0 0 4.77 1.49v-3.5a4.82 4.82 0 0 1-1.28-.05z"/></svg>
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.85'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.9 2.89 2.89 0 0 1-2.88-2.89 2.89 2.89 0 0 1 2.88-2.89c.29 0 .57.04.84.1v-3.5a6.37 6.37 0 0 0-.84-.06A6.34 6.34 0 0 0 3.4 15.6a6.34 6.34 0 0 0 6.35 6.34 6.34 6.34 0 0 0 6.35-6.34V8.75a8.28 8.28 0 0 0 4.77 1.49v-3.5a4.82 4.82 0 0 1-1.28-.05z"/></svg>
                   TikTok
                 </a>
               )}
@@ -228,13 +226,11 @@ export default function Profile() {
                 <a href={`https://facebook.com/${profile.social_facebook}`} target="_blank" rel="noopener noreferrer" style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   padding: '6px 14px', borderRadius: 8, fontSize: 13,
-                  background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)',
-                  textDecoration: 'none', transition: 'background 0.2s',
-                  backdropFilter: 'blur(8px)',
+                  background: '#1877f2', color: 'white', textDecoration: 'none', transition: 'opacity 0.2s',
                 }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2z"/></svg>
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.85'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   Facebook
                 </a>
               )}
