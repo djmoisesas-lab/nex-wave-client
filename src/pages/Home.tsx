@@ -233,8 +233,8 @@ export default function Home() {
       ) : (
         <>
           <div style={{ display: 'flex', gap: isMobile ? 16 : 24, flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start' }}>
-            <div style={{ flex: 1, minWidth: 0, order: isMobile ? 2 : 0 }}>
-              <div style={{ marginBottom: 12 }}>
+            <div style={{ flex: 1, minWidth: 0, order: isMobile ? 1 : 0 }}>
+              <div style={{ marginBottom: isMobile ? 8 : 12 }}>
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                   <input
                     type="text"
@@ -253,12 +253,12 @@ export default function Home() {
               </div>
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                marginBottom: 16, flexWrap: 'wrap', gap: 8,
+                marginBottom: isMobile ? 10 : 16, flexWrap: 'wrap', gap: 8,
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <h2 style={{ fontSize: 18, fontWeight: 700 }}>Sets</h2>
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 10 }}>
+                  <h2 style={{ fontSize: isMobile ? 15 : 18, fontWeight: 700 }}>Sets</h2>
                   <select value={sort} onChange={(e) => setSort(e.target.value)}
-                    style={{ width: 140, fontSize: 12, padding: '4px 8px' }}>
+                    style={{ width: isMobile ? 120 : 140, fontSize: 12, padding: '4px 8px' }}>
                     <option value="date">Más recientes</option>
                     <option value="plays">Más reproducidos</option>
                     <option value="likes">Más likeados</option>
@@ -317,12 +317,12 @@ export default function Home() {
 
             {!recsLoading && suggestedUsers.length > 0 && (
               <div className="glass" style={{
-                width: isMobile ? '100%' : 260, flexShrink: 0, borderRadius: 12, padding: 16,
-                position: isMobile ? 'static' : 'sticky', top: 80, order: isMobile ? 1 : 0,
+                width: isMobile ? '100%' : 260, flexShrink: 0, borderRadius: 12, padding: isMobile ? 12 : 16,
+                position: isMobile ? 'static' : 'sticky', top: 80, order: isMobile ? 2 : 0,
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: isMobile ? 8 : 12 }}>
                   <UserPlus size={16} style={{ color: 'var(--accent)' }} />
-                  <h3 style={{ fontSize: 14, fontWeight: 700 }}>Creadores sugeridos</h3>
+                  <h3 style={{ fontSize: isMobile ? 13 : 14, fontWeight: 700 }}>Creadores sugeridos</h3>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                   {suggestedUsers.map((u) => {
@@ -385,10 +385,10 @@ export default function Home() {
           </div>
 
           {!recsLoading && suggestedTracks.length > 0 && (
-            <div style={{ marginTop: 28 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                <Headphones size={18} style={{ color: 'var(--accent)' }} />
-                <h2 style={{ fontSize: 17, fontWeight: 700 }}>Sets que te pueden gustar</h2>
+            <div style={{ marginTop: isMobile ? 20 : 28 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: isMobile ? 10 : 12 }}>
+                <Headphones size={16} style={{ color: 'var(--accent)' }} />
+                <h2 style={{ fontSize: isMobile ? 15 : 17, fontWeight: 700 }}>Sets que te pueden gustar</h2>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {suggestedTracks.map((track, i) => (
