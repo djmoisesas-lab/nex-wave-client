@@ -88,13 +88,15 @@ export default function Home() {
             position: 'relative',
           }}>
           <div style={{
-            position: 'absolute', top: '-60%', right: '-5%', width: 350, height: 350,
+            position: 'absolute', top: '-60%', right: '-5%',
+            width: isMobile ? 180 : 350, height: isMobile ? 180 : 350,
             borderRadius: '50%', background: 'rgba(139,92,246,0.15)',
             filter: 'blur(60px)',
             animation: 'gradientShift 8s ease infinite alternate',
           }} />
           <div style={{
-            position: 'absolute', bottom: '-40%', left: '-5%', width: 250, height: 250,
+            position: 'absolute', bottom: '-40%', left: '-5%',
+            width: isMobile ? 140 : 250, height: isMobile ? 140 : 250,
             borderRadius: '50%', background: 'rgba(99,102,241,0.1)',
             filter: 'blur(50px)',
             animation: 'gradientShift 10s ease infinite alternate-reverse',
@@ -103,13 +105,13 @@ export default function Home() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
                 <h1 style={{
-                  fontSize: 30, fontWeight: 800, color: 'white',
+                  fontSize: isMobile ? 24 : 30, fontWeight: 800, color: 'white',
                   letterSpacing: '-0.5px', marginBottom: 4,
                 }}>
                   <span style={{ color: 'var(--accent)' }}>Nex</span>Wave
                 </h1>
                 <p style={{
-                  color: 'rgba(255,255,255,0.5)', fontSize: 14,
+                  color: 'rgba(255,255,255,0.5)', fontSize: isMobile ? 13 : 14,
                   maxWidth: 400, lineHeight: 1.5,
                 }}>
                   {isAuthenticated
@@ -140,20 +142,20 @@ export default function Home() {
               </div>
             </div>
             <div style={{
-              display: 'flex', gap: 24, marginTop: 16, paddingTop: 16,
+              display: 'flex', gap: isMobile ? 16 : 24, marginTop: isMobile ? 10 : 16, paddingTop: isMobile ? 10 : 16,
               borderTop: '1px solid rgba(255,255,255,0.06)',
             }}>
               {isAuthenticated && (
                 <div>
-                  <div style={{ fontSize: 18, fontWeight: 800, color: 'white' }}>
+                  <div style={{ fontSize: isMobile ? 16 : 18, fontWeight: 800, color: 'white' }}>
                     {loading ? '...' : tracks.length}
                   </div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.5px' }}>TRACKS</div>
+                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.5px' }}>TRACKS</div>
                 </div>
               )}
               <div>
-                <div style={{ fontSize: 18, fontWeight: 800, color: 'white' }}>24/7</div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.5px' }}>DISPONIBLE</div>
+                <div style={{ fontSize: isMobile ? 16 : 18, fontWeight: 800, color: 'white' }}>24/7</div>
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.5px' }}>DISPONIBLE</div>
               </div>
             </div>
           </div>
@@ -166,64 +168,64 @@ export default function Home() {
             display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(240px, 1fr))',
             gap: isMobile ? 10 : 16, marginBottom: 28,
           }}>
-            <div className="card" style={{ padding: 24, textAlign: 'center' }}>
+            <div className="card" style={{ padding: isMobile ? 14 : 24, textAlign: 'center' }}>
               <div style={{
-                width: 48, height: 48, borderRadius: 12, margin: '0 auto 14px',
+                width: isMobile ? 40 : 48, height: isMobile ? 40 : 48, borderRadius: 12, margin: '0 auto 14px',
                 background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}><Music size={22} /></div>
-              <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Subí tus sesiones</h3>
-              <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5 }}>
-                Compartí tus sesiones y producciones con la comunidad. Formatos MP3, WAV, FLAC y más.
+              }}><Music size={isMobile ? 18 : 22} /></div>
+              <h3 style={{ fontSize: isMobile ? 13 : 15, fontWeight: 600, marginBottom: 6 }}>Subí tus sesiones</h3>
+              <p style={{ fontSize: isMobile ? 12 : 13, color: 'var(--text2)', lineHeight: 1.4 }}>
+                Compartí tus sesiones y producciones con la comunidad.
               </p>
             </div>
-            <div className="card" style={{ padding: 24, textAlign: 'center' }}>
+            <div className="card" style={{ padding: isMobile ? 14 : 24, textAlign: 'center' }}>
               <div style={{
-                width: 48, height: 48, borderRadius: 12, margin: '0 auto 14px',
+                width: isMobile ? 40 : 48, height: isMobile ? 40 : 48, borderRadius: 12, margin: '0 auto 14px',
                 background: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}><Users size={22} /></div>
-              <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Conectá con DJs</h3>
-              <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5 }}>
-                Seguí a otros artistas, descubrí su música y armá tu red de contactos.
+              }}><Users size={isMobile ? 18 : 22} /></div>
+              <h3 style={{ fontSize: isMobile ? 13 : 15, fontWeight: 600, marginBottom: 6 }}>Conectá con DJs</h3>
+              <p style={{ fontSize: isMobile ? 12 : 13, color: 'var(--text2)', lineHeight: 1.4 }}>
+                Seguí a otros artistas y descubrí su música.
               </p>
             </div>
-            <div className="card" style={{ padding: 24, textAlign: 'center' }}>
+            <div className="card" style={{ padding: isMobile ? 14 : 24, textAlign: 'center' }}>
               <div style={{
-                width: 48, height: 48, borderRadius: 12, margin: '0 auto 14px',
+                width: isMobile ? 40 : 48, height: isMobile ? 40 : 48, borderRadius: 12, margin: '0 auto 14px',
                 background: 'linear-gradient(135deg, #06b6d4, #3b82f6)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}><ClipboardList size={22} /></div>
-              <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Playlists inteligentes</h3>
-              <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5 }}>
-                Organizá tus sets favoritos en playlists y compartilas con quien quieras.
+              }}><ClipboardList size={isMobile ? 18 : 22} /></div>
+              <h3 style={{ fontSize: isMobile ? 13 : 15, fontWeight: 600, marginBottom: 6 }}>Playlists inteligentes</h3>
+              <p style={{ fontSize: isMobile ? 12 : 13, color: 'var(--text2)', lineHeight: 1.4 }}>
+                Organizá tus sets favoritos y compartilos.
               </p>
             </div>
-            <div className="card" style={{ padding: 24, textAlign: 'center' }}>
+            <div className="card" style={{ padding: isMobile ? 14 : 24, textAlign: 'center' }}>
               <div style={{
-                width: 48, height: 48, borderRadius: 12, margin: '0 auto 14px',
+                width: isMobile ? 40 : 48, height: isMobile ? 40 : 48, borderRadius: 12, margin: '0 auto 14px',
                 background: 'linear-gradient(135deg, #10b981, #06b6d4)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}><BarChart3 size={22} /></div>
-              <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Estadísticas</h3>
-              <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5 }}>
-                Seguí tus reproducciones, descargas y hacé crecer tu presencia como DJ.
+              }}><BarChart3 size={isMobile ? 18 : 22} /></div>
+              <h3 style={{ fontSize: isMobile ? 13 : 15, fontWeight: 600, marginBottom: 6 }}>Estadísticas</h3>
+              <p style={{ fontSize: isMobile ? 12 : 13, color: 'var(--text2)', lineHeight: 1.4 }}>
+                Seguí tus reproducciones y hacé crecer tu presencia.
               </p>
             </div>
           </div>
 
           <div style={{
-            borderRadius: 12, padding: '32px',
+            borderRadius: 12, padding: isMobile ? '24px 16px' : '32px',
             background: 'var(--bg2)', border: '1px solid var(--border)',
             textAlign: 'center',
           }}>
-            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
+            <h2 style={{ fontSize: isMobile ? 17 : 20, fontWeight: 700, marginBottom: 8 }}>
               ¿Listo para compartir tu música?
             </h2>
-            <p style={{ color: 'var(--text2)', fontSize: 14, marginBottom: 20, maxWidth: 500, margin: '0 auto 20px' }}>
-              Crea tu perfil de DJ en segundos y empieza a subir tus sesiones. Es gratis.
+            <p style={{ color: 'var(--text2)', fontSize: isMobile ? 13 : 14, marginBottom: 20, maxWidth: 500, margin: '0 auto 20px' }}>
+              Crea tu perfil de DJ en segundos y empieza a subir tus sesiones.
             </p>
-            <Link to="/register" className="btn btn-primary" style={{ padding: '12px 28px' }}>
+            <Link to="/register" className="btn btn-primary" style={{ padding: isMobile ? '10px 20px' : '12px 28px', fontSize: isMobile ? 13 : 14 }}>
               Crear cuenta gratis
             </Link>
           </div>
