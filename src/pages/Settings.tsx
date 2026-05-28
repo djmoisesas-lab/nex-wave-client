@@ -114,11 +114,13 @@ export default function Settings() {
 
           <div className="form-group">
             <label>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="url(#ig-gradient)" style={{ marginRight: 4, verticalAlign: 'middle' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" style={{ marginRight: 4, verticalAlign: 'middle' }}>
                 <defs><linearGradient id="ig-gradient" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stopColor="#405de6"/><stop offset="0.25" stopColor="#5851db"/><stop offset="0.5" stopColor="#833ab4"/><stop offset="0.75" stopColor="#c13584"/><stop offset="1" stopColor="#fd1d1d"/></linearGradient></defs>
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <circle cx="12" cy="12" r="5" />
-                <circle cx="17.5" cy="6.5" r="1.5" />
+                <g fill="url(#ig-gradient)">
+                  <rect x="2" y="2" width="20" height="20" rx="5" />
+                  <circle cx="12" cy="12" r="5" />
+                  <circle cx="17.5" cy="6.5" r="1.5" />
+                </g>
               </svg>
               Instagram
             </label>
@@ -130,9 +132,9 @@ export default function Settings() {
 
           <div className="form-group">
             <label>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="url(#tt-gradient)" style={{ marginRight: 4, verticalAlign: 'middle' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" style={{ marginRight: 4, verticalAlign: 'middle' }}>
                 <defs><linearGradient id="tt-gradient" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stopColor="#00f2ea"/><stop offset="1" stopColor="#ff0050"/></linearGradient></defs>
-                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.9 2.89 2.89 0 0 1-2.88-2.89 2.89 2.89 0 0 1 2.88-2.89c.29 0 .57.04.84.1v-3.5a6.37 6.37 0 0 0-.84-.06A6.34 6.34 0 0 0 3.4 15.6a6.34 6.34 0 0 0 6.35 6.34 6.34 6.34 0 0 0 6.35-6.34V8.75a8.28 8.28 0 0 0 4.77 1.49v-3.5a4.82 4.82 0 0 1-1.28-.05z"/>
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.9 2.89 2.89 0 0 1-2.88-2.89 2.89 2.89 0 0 1 2.88-2.89c.29 0 .57.04.84.1v-3.5a6.37 6.37 0 0 0-.84-.06A6.34 6.34 0 0 0 3.4 15.6a6.34 6.34 0 0 0 6.35 6.34 6.34 6.34 0 0 0 6.35-6.34V8.75a8.28 8.28 0 0 0 4.77 1.49v-3.5a4.82 4.82 0 0 1-1.28-.05z" fill="url(#tt-gradient)"/>
               </svg>
               TikTok
             </label>
@@ -144,8 +146,8 @@ export default function Settings() {
 
           <div className="form-group">
             <label>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#1877f2" style={{ marginRight: 4, verticalAlign: 'middle' }}>
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              <svg width="14" height="14" viewBox="0 0 24 24" style={{ marginRight: 4, verticalAlign: 'middle' }}>
+                <path fill="#1877f2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
               </svg>
               Facebook
             </label>
