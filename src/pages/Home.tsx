@@ -241,7 +241,7 @@ export default function Home() {
                     placeholder="Buscar sets..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    style={{ flex: 1, minWidth: 0 }}
+                    style={{ flex: 1, minWidth: 0, fontSize: 16 }}
                   />
                   {search && (
                     <button className="btn btn-secondary btn-sm" onClick={() => setSearch('')}
