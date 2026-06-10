@@ -90,6 +90,44 @@ export const api = {
 
   getTrack: (id: string) => request<Track>(`/tracks/${id}`),
 
+  initUpload: (ext: string, contentType?: string) =>
+    request<{ url: string; path: string }>('/tracks/init-upload', {
+      method: 'POST',
+      body: JSON.stringify({ ext, contentType }),
+    }),
+
+  uploadToSignedUrl: (url: string, file: File, onProgress?: (pct: number) => void) =>
+    new Promise<void>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', url);
+      xhr.setRequestHeader('Content-Type', file.type || 'audio/mpeg');
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable && onProgress) {
+          onProgress(Math.round((e.loaded / e.total) * 100));
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve();
+        } else {
+          reject(new Error('Error al subir a Firebase'));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Error de conexión al subir a Firebase'));
+      xhr.ontimeout = () => reject(new Error('La subida a Firebase superó el tiempo máximo'));
+      xhr.timeout = 35 * 60 * 1000;
+      xhr.send(file);
+    }),
+
+  uploadTrackFromFirebase: (data: { firebasePath: string; title: string; artist?: string; genre?: string; bpm?: string; musicalKey?: string; description?: string; originalName?: string }) =>
+    request<Track>('/tracks/from-firebase', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
   uploadTrack: (formData: FormData, onProgress?: (pct: number) => void) =>
     new Promise<Track>((resolve, reject) => {
       const xhr = new XMLHttpRequest();

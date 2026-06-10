@@ -50,15 +50,21 @@ export default function Upload() {
     setProgress(0);
     setError('');
 
-    const formData = new FormData();
-    formData.append('audio', file);
-    formData.append('title', title);
-    formData.append('artist', artist);
-    formData.append('genre', genre);
-    formData.append('description', description);
-
     try {
-      const track = await api.uploadTrack(formData, setProgress);
+      const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+      const { url, path } = await api.initUpload(ext || '.mp3', file.type || 'audio/mpeg');
+
+      await api.uploadToSignedUrl(url, file, setProgress);
+
+      const track = await api.uploadTrackFromFirebase({
+        firebasePath: path,
+        title,
+        artist,
+        genre,
+        description,
+        originalName: file.name,
+      });
+
       if (cover) {
         const coverForm = new FormData();
         coverForm.append('cover', cover);
