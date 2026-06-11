@@ -72,7 +72,7 @@ export default function Layout() {
     api.getNotifications().then(setNotifications).catch(() => {});
     connectNotificationStream();
     const unsub = onNotification((n) => {
-      setNotifications((prev) => [n, ...prev]);
+      setNotifications((prev) => prev.some(x => x.id === n.id) ? prev : [n, ...prev]);
     });
     return () => { disconnectNotificationStream(); unsub(); };
   }, [isAuthenticated]);
