@@ -359,7 +359,15 @@ export default function PlayerBar() {
             >
               {volume === 0 ? <VolumeX size={16} /> : volume < 0.5 ? <Volume1 size={16} /> : <Volume2 size={16} />}
             </span>
-            <div style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}>
+            <div
+              style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}
+              onWheel={(e) => {
+                e.preventDefault();
+                const step = 0.05;
+                const dir = e.deltaY > 0 ? -step : step;
+                setVolume(Math.max(0, Math.min(1, volume + dir)));
+              }}
+            >
               <div style={{
                 position: 'absolute', top: '50%', left: 0, right: 0,
                 height: 4, transform: 'translateY(-50%)', borderRadius: 4, pointerEvents: 'none',
