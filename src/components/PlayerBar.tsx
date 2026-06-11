@@ -18,6 +18,7 @@ export default function PlayerBar() {
   const animFrameRef = useRef<number>();
   const currentSrcRef = useRef('');
   const seekRef = useRef<HTMLDivElement | null>(null);
+  const volRef = useRef<HTMLInputElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragTime, setDragTime] = useState(0);
   const [dismissed, setDismissed] = useState(false);
@@ -194,6 +195,19 @@ export default function PlayerBar() {
     };
   }, [isDragging, duration]);
 
+  useEffect(() => {
+    const el = volRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const step = 0.05;
+      const dir = e.deltaY > 0 ? -step : step;
+      setVolume((v) => Math.max(0, Math.min(1, v + dir)));
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, []);
+
   const formatTime = (t: number) => {
     if (isNaN(t)) return '0:00';
     const m = Math.floor(t / 60);
@@ -359,21 +373,14 @@ export default function PlayerBar() {
             >
               {volume === 0 ? <VolumeX size={16} /> : volume < 0.5 ? <Volume1 size={16} /> : <Volume2 size={16} />}
             </span>
-            <div
-              style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}
-              onWheel={(e) => {
-                e.preventDefault();
-                const step = 0.05;
-                const dir = e.deltaY > 0 ? -step : step;
-                setVolume(Math.max(0, Math.min(1, volume + dir)));
-              }}
-            >
+            <div style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}>
               <div style={{
                 position: 'absolute', top: '50%', left: 0, right: 0,
                 height: 4, transform: 'translateY(-50%)', borderRadius: 4, pointerEvents: 'none',
                 background: `linear-gradient(to right, var(--accent) ${volume * 100}%, var(--bg4) ${volume * 100}%)`,
               }} />
               <input
+                ref={volRef}
                 type="range"
                 min={0}
                 max={1}
