@@ -90,10 +90,10 @@ export const api = {
 
   getTrack: (id: string) => request<Track>(`/tracks/${id}`),
 
-  initUpload: (ext: string, contentType?: string) =>
+  initUpload: (ext: string, contentType?: string, fileSize?: number) =>
     request<{ url: string; path: string }>('/tracks/init-upload', {
       method: 'POST',
-      body: JSON.stringify({ ext, contentType }),
+      body: JSON.stringify({ ext, contentType, fileSize }),
     }),
 
   uploadToSignedUrl: (url: string, file: File, onProgress?: (pct: number) => void) =>

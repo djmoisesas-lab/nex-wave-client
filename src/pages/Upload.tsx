@@ -50,9 +50,16 @@ export default function Upload() {
     setProgress(0);
     setError('');
 
+    const MAX_SIZE = 400 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      setError(`El archivo supera el límite de 400 MB`);
+      setUploading(false);
+      return;
+    }
+
     try {
       const ext = '.' + file.name.split('.').pop()?.toLowerCase();
-      const { url, path } = await api.initUpload(ext || '.mp3', file.type || 'audio/mpeg');
+      const { url, path } = await api.initUpload(ext || '.mp3', file.type || 'audio/mpeg', file.size);
 
       await api.uploadToSignedUrl(url, file, setProgress);
 
@@ -140,7 +147,7 @@ export default function Upload() {
                 <FolderOpen size={isMobile ? 24 : 32} style={{ marginBottom: 8 }} />
                 <div style={{ fontWeight: 600, fontSize: isMobile ? 13 : undefined }}>Haz clic para seleccionar</div>
                 <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 4 }}>
-                  MP3, WAV, FLAC, AAC, OGG, M4A · Max 500 MB
+                  MP3, WAV, FLAC, AAC, OGG, M4A · Max 400 MB
                 </div>
               </div>
             )}
