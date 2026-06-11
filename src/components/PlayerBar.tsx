@@ -334,6 +334,17 @@ export default function PlayerBar() {
               width: `${isDragging ? (dragTime / duration) * 100 : progress}%`,
               transition: isDragging ? 'none' : 'width 0.15s linear',
             }} />
+            {(isDragging || progress > 0) && (
+              <div style={{
+                position: 'absolute', left: `${isDragging ? (dragTime / duration) * 100 : progress}%`, top: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 12, height: 12, borderRadius: '50%',
+                background: 'var(--accent2)',
+                boxShadow: '0 0 8px var(--accent2)',
+                pointerEvents: 'none',
+                transition: isDragging ? 'none' : 'left 0.15s linear',
+              }} />
+            )}
           </div>
           <span style={{ fontSize: 10, color: 'var(--text2)', minWidth: 24, fontVariantNumeric: 'tabular-nums' }}>
             -{formatTime(Math.max(0, duration - currentTime))}
