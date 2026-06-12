@@ -232,27 +232,25 @@ export default function Home() {
         </>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: isMobile ? 16 : 24, flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start' }}>
-            <div style={{ flex: 1, minWidth: 0, order: isMobile ? 1 : 0 }}>
-              {!isMobile && (
-                <div style={{ marginBottom: 12 }}>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                    <input
-                      type="text"
-                      placeholder="Buscar sets..."
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      style={{ flex: 1, minWidth: 0, fontSize: 16 }}
-                    />
-                    {search && (
-                      <button className="btn btn-secondary btn-sm" onClick={() => setSearch('')}
-                        style={{ flexShrink: 0 }}>
-                        Limpiar
-                      </button>
-                    )}
-                  </div>
+          <div style={{ display: 'flex', gap: isMobile ? 16 : 24, flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'stretch' : 'flex-start' }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    placeholder="Buscar sets..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    style={{ flex: 1, minWidth: 0, fontSize: 16 }}
+                  />
+                  {search && (
+                    <button className="btn btn-secondary btn-sm" onClick={() => setSearch('')}
+                      style={{ flexShrink: 0 }}>
+                      Limpiar
+                    </button>
+                  )}
                 </div>
-              )}
+              </div>
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 marginBottom: isMobile ? 10 : 16, flexWrap: 'wrap', gap: 8,
@@ -260,28 +258,24 @@ export default function Home() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 10 }}>
                   {isMobile && <Music size={16} style={{ color: 'var(--accent)' }} />}
                   <h2 style={{ fontSize: isMobile ? 15 : 18, fontWeight: 700 }}>Sets</h2>
-                  {!isMobile && (
-                    <select value={sort} onChange={(e) => setSort(e.target.value)}
-                      style={{ width: 140, fontSize: 12, padding: '4px 8px' }}>
-                      <option value="date">Más recientes</option>
-                      <option value="plays">Más reproducidos</option>
-                      <option value="likes">Más likeados</option>
-                      <option value="title">A-Z</option>
-                    </select>
-                  )}
+                  <select value={sort} onChange={(e) => setSort(e.target.value)}
+                    style={{ width: isMobile ? 130 : 140, fontSize: 12, padding: '4px 8px' }}>
+                    <option value="date">Más recientes</option>
+                    <option value="plays">Más reproducidos</option>
+                    <option value="likes">Más likeados</option>
+                    <option value="title">A-Z</option>
+                  </select>
                 </div>
-                {!isMobile && (
-                  <Link to="/explore" style={{
-                      fontSize: 13, color: 'var(--accent)', textDecoration: 'none',
-                      fontWeight: 600, padding: '4px 10px', borderRadius: 6,
-                      transition: 'background 0.2s',
-                    }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                    >
-                      Ver todos →
-                    </Link>
-                )}
+                <Link to="/explore" style={{
+                    fontSize: 13, color: 'var(--accent)', textDecoration: 'none',
+                    fontWeight: 600, padding: '4px 10px', borderRadius: 6,
+                    transition: 'background 0.2s',
+                  }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    Ver todos →
+                  </Link>
               </div>
 
               {loading ? (
@@ -325,7 +319,7 @@ export default function Home() {
             {!recsLoading && suggestedUsers.length > 0 && (
               <div className="glass" style={{
                 width: isMobile ? '100%' : 260, flexShrink: 0, borderRadius: 12, padding: isMobile ? 12 : 16,
-                position: isMobile ? 'static' : 'sticky', top: 80, order: isMobile ? 2 : 0,
+                position: isMobile ? 'static' : 'sticky', top: 80,
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: isMobile ? 8 : 12 }}>
                   <UserPlus size={16} style={{ color: 'var(--accent)' }} />
