@@ -200,6 +200,7 @@ export default function PlayerBar() {
     if (!el) return;
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       const step = 0.05;
       const dir = e.deltaY > 0 ? -step : step;
       setVolume((v) => Math.max(0, Math.min(1, v + dir)));
@@ -209,7 +210,7 @@ export default function PlayerBar() {
       const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       setVolume(pct);
     };
-    el.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('wheel', onWheel, { passive: false, capture: true });
     el.addEventListener('mousedown', onMouseDown);
     return () => {
       el.removeEventListener('wheel', onWheel);
