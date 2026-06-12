@@ -183,15 +183,18 @@ export default function Profile() {
                 <div style={{ width: 1, background: 'rgba(255,255,255,0.1)', margin: '2px 0' }} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 6, padding: '0 6px' }}>
                   <Users size={isMobile ? 12 : 14} style={{ color: 'rgba(255,255,255,0.4)' }} />
-                  <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, color: 'white' }}>{profile.followers_count || 0}</span>
+                  <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, color: 'white' }}>{profile.followers_count ?? 0}</span>
                   <span style={{ fontSize: isMobile ? 10 : 11, color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}>seguidores</span>
                 </div>
                 <div style={{ width: 1, background: 'rgba(255,255,255,0.1)', margin: '2px 0' }} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 6, padding: '0 6px' }}>
                   <UserPlus size={isMobile ? 12 : 14} style={{ color: 'rgba(255,255,255,0.4)' }} />
-                  <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, color: 'white' }}>{profile.following_count || 0}</span>
+                  <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, color: 'white' }}>{profile.following_count ?? 0}</span>
                   <span style={{ fontSize: isMobile ? 10 : 11, color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}>siguiendo</span>
                 </div>
+              </div>
+              <div style={{ marginTop: 8, fontSize: 14, color: 'rgba(255,255,255,0.8)', background: 'rgba(0,0,0,0.3)', padding: '6px 12px', borderRadius: 8 }}>
+                📊 Datos: {tracks.length} tracks · {JSON.stringify(profile.followers_count)} seguidores · {JSON.stringify(profile.following_count)} siguiendo
               </div>
             </div>
           </div>
