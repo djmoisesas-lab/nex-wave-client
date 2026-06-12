@@ -302,29 +302,40 @@ export default function Layout() {
                     </div>
                   )}
 
-                  {!isMobile && (
-                    <Link to="/settings" style={{
-                      display: 'flex', alignItems: 'center', gap: 8,
-                      fontSize: 14, color: 'var(--text2)',
-                      padding: '6px 8px', borderRadius: 'var(--radius-sm)',
-                      transition: 'background 0.2s',
-                    }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-                      <div style={{
-                        width: 28, height: 28, borderRadius: '50%', overflow: 'hidden',
-                        background: 'var(--accent)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 12, fontWeight: 700, color: 'white', flexShrink: 0,
-                      }}>
-                        {user?.avatar_url ? (
-                          <img src={user.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        ) : (
-                          user?.display_name?.[0]?.toUpperCase() || user?.username?.[0]?.toUpperCase() || '?'
-                        )}
-                      </div>
-                      {user?.display_name || user?.username}
-                    </Link>
+                  {!isMobile && user && (
+                    <>
+                      <Link to={`/profile/${user.id}`} style={{
+                        display: 'flex', alignItems: 'center', gap: 8,
+                        fontSize: 14, color: 'var(--text2)',
+                        padding: '6px 8px', borderRadius: 'var(--radius-sm)',
+                        transition: 'background 0.2s', textDecoration: 'none',
+                      }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+                        <div style={{
+                          width: 28, height: 28, borderRadius: '50%', overflow: 'hidden',
+                          background: 'var(--accent)',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: 12, fontWeight: 700, color: 'white', flexShrink: 0,
+                        }}>
+                          {user?.avatar_url ? (
+                            <img src={user.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            user?.display_name?.[0]?.toUpperCase() || user?.username?.[0]?.toUpperCase() || '?'
+                          )}
+                        </div>
+                        {user?.display_name || user?.username}
+                      </Link>
+                      <Link to="/settings" style={{
+                        fontSize: 13, color: 'var(--text2)',
+                        padding: '6px 8px', borderRadius: 'var(--radius-sm)',
+                        transition: 'background 0.2s', textDecoration: 'none',
+                      }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+                        Ajustes
+                      </Link>
+                    </>
                   )}
 
                   <div ref={notifRef} style={{ position: 'relative' }}>
@@ -478,13 +489,21 @@ export default function Layout() {
                         borderRadius: '0 0 0 12px', overflow: 'hidden',
                         boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
                       }}>
+                        <Link to={`/profile/${user?.id}`} onClick={() => setShowMobileMenu(false)}
+                          style={{
+                            display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px',
+                            color: 'var(--text)', textDecoration: 'none', fontSize: 14,
+                            borderBottom: '1px solid var(--border)', fontWeight: 500,
+                          }}>
+                          <User size={18} /> Mi Perfil
+                        </Link>
                         <Link to="/settings" onClick={() => setShowMobileMenu(false)}
                           style={{
                             display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px',
                             color: 'var(--text)', textDecoration: 'none', fontSize: 14,
                             borderBottom: '1px solid var(--border)', fontWeight: 500,
                           }}>
-                          <User size={18} /> Perfil
+                          Ajustes
                         </Link>
                         <Link to="/upload" onClick={() => setShowMobileMenu(false)}
                           style={{
