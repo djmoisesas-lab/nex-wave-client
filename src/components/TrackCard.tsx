@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Track } from '../types';
 import { usePlayerStore, useAuthStore } from '../services/store';
 import { api } from '../services/api';
@@ -24,7 +24,6 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
   const isCurrentTrack = currentTrack?.id === track.id;
 
   const handlePlay = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
     if (!isAuthenticated) { navigate('/login'); return; }
     if (isCurrentTrack) {
@@ -35,7 +34,6 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
   };
 
   const handleLike = async (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
     if (!isAuthenticated) { navigate('/login'); return; }
     setLiked(!liked);
@@ -63,18 +61,12 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
         transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
         transform: isHovered ? 'translateY(-1px) scale(1.01)' : undefined,
         boxShadow: isHovered ? `0 0 24px var(--accent-glow), 0 4px 12px rgba(0,0,0,0.3)` : undefined,
-        cursor: 'pointer',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={(e) => {
-        const target = e.target as HTMLElement;
-        if (target.closest('button, a')) return;
-        navigate(`/track/${track.id}`);
-      }}
     >
       <button
-        onClick={(e) => { e.stopPropagation(); handlePlay(e); }}
+        onClick={handlePlay}
         className={`play-btn ${isCurrentTrack ? 'play-btn-active' : 'play-btn-inactive'}`}
         style={{
           width: isMobile ? 40 : 44, height: isMobile ? 40 : 44, flexShrink: 0,
@@ -101,7 +93,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
         </div>
       )}
 
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <Link to={`/track/${track.id}`} style={{ flex: 1, minWidth: 0, textDecoration: 'none', color: 'inherit' }}>
         <div style={{
           fontWeight: 600, fontSize: 14, marginBottom: 2,
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
@@ -124,11 +116,11 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
             </>
           )}
         </div>
-      </div>
+      </Link>
 
       <div style={{ display: 'flex', gap: isMobile ? 6 : 8, alignItems: 'center', flexShrink: 0 }}>
         <button
-          onClick={(e) => { e.stopPropagation(); handleLike(e); }}
+          onClick={handleLike}
           style={{
             display: 'flex', gap: 3, alignItems: 'center', fontSize: isMobile ? 11 : 12,
             background: 'none', border: 'none', cursor: isAuthenticated ? 'pointer' : 'default',
