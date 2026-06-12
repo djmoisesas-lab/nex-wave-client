@@ -585,7 +585,7 @@ export default function Layout() {
       </nav>
 
       <main style={{
-        flex: 1, padding: isMobile ? '16px 0 90px 0' : '24px 0 100px 0',
+        flex: 1, padding: isMobile ? '16px 0 120px 0' : '24px 0 120px 0',
         marginRight: !isMobile && currentTrack && queueVisible ? 300 : 0,
         transition: 'margin-right 0.2s ease',
       }}>

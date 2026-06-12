@@ -204,18 +204,16 @@ export default function PlayerBar() {
       const dir = e.deltaY > 0 ? -step : step;
       setVolume((v) => Math.max(0, Math.min(1, v + dir)));
     };
-    const onClick = (e: MouseEvent) => {
-      const bar = el.querySelector('div') as HTMLElement;
-      if (!bar) return;
-      const rect = bar.getBoundingClientRect();
+    const onMouseDown = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
       const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       setVolume(pct);
     };
     el.addEventListener('wheel', onWheel, { passive: false });
-    el.addEventListener('mousedown', onClick);
+    el.addEventListener('mousedown', onMouseDown);
     return () => {
       el.removeEventListener('wheel', onWheel);
-      el.removeEventListener('mousedown', onClick);
+      el.removeEventListener('mousedown', onMouseDown);
     };
   }, []);
 
@@ -377,29 +375,29 @@ export default function PlayerBar() {
         </div>
 
         {!isMobile && (
-            <div ref={volRef} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span
-                onClick={() => usePlayerStore.getState().toggleMute()}
-                style={{ color: 'var(--text2)', width: 20, textAlign: 'center', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                {volume === 0 ? <VolumeX size={16} /> : volume < 0.5 ? <Volume1 size={16} /> : <Volume2 size={16} />}
-              </span>
-              <div style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}>
-                <div style={{
-                  position: 'absolute', top: '50%', left: 0, right: 0,
-                  height: 4, transform: 'translateY(-50%)', borderRadius: 4, pointerEvents: 'none',
-                  background: `linear-gradient(to right, var(--accent) ${volume * 100}%, var(--bg4) ${volume * 100}%)`,
-                }} />
-                <input
-                  type="range"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={volume}
-                  onChange={(e) => setVolume(parseFloat(e.target.value))}
-                  style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', margin: 0, background: 'transparent', pointerEvents: 'none' }}
-                />
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span
+              onClick={() => usePlayerStore.getState().toggleMute()}
+              style={{ color: 'var(--text2)', width: 20, textAlign: 'center', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {volume === 0 ? <VolumeX size={16} /> : volume < 0.5 ? <Volume1 size={16} /> : <Volume2 size={16} />}
+            </span>
+            <div ref={volRef} style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}>
+              <div style={{
+                position: 'absolute', top: '50%', left: 0, right: 0,
+                height: 4, transform: 'translateY(-50%)', borderRadius: 4, pointerEvents: 'none',
+                background: `linear-gradient(to right, var(--accent) ${volume * 100}%, var(--bg4) ${volume * 100}%)`,
+              }} />
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume}
+                onChange={(e) => setVolume(parseFloat(e.target.value))}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', margin: 0, background: 'transparent', pointerEvents: 'none' }}
+              />
+            </div>
             <span style={{ fontSize: 10, color: 'var(--text2)', width: 24, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
               {Math.round(volume * 100)}%
             </span>
