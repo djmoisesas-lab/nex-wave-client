@@ -205,17 +205,8 @@ export default function PlayerBar() {
       const dir = e.deltaY > 0 ? -step : step;
       setVolume((v) => Math.max(0, Math.min(1, v + dir)));
     };
-    const onMouseDown = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      setVolume(pct);
-    };
     el.addEventListener('wheel', onWheel, { passive: false, capture: true });
-    el.addEventListener('mousedown', onMouseDown);
-    return () => {
-      el.removeEventListener('wheel', onWheel);
-      el.removeEventListener('mousedown', onMouseDown);
-    };
+    return () => el.removeEventListener('wheel', onWheel);
   }, []);
 
   const formatTime = (t: number) => {
@@ -396,7 +387,7 @@ export default function PlayerBar() {
                 step={0.01}
                 value={volume}
                 onChange={(e) => setVolume(parseFloat(e.target.value))}
-                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', margin: 0, background: 'transparent', pointerEvents: 'none' }}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', margin: 0, background: 'transparent' }}
               />
             </div>
             <span style={{ fontSize: 10, color: 'var(--text2)', width: 24, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
