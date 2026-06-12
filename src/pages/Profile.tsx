@@ -5,7 +5,7 @@ import { Track, Playlist } from '../types';
 import TrackCard from '../components/TrackCard';
 import { useAuthStore } from '../services/store';
 import { useMediaQuery } from '../services/useMediaQuery';
-import { Music, Headphones, Bell, BellOff } from 'lucide-react';
+import { Music, Headphones, Bell, BellOff, Users, UserPlus } from 'lucide-react';
 import { useToastStore } from '../services/toast';
 
 export default function Profile() {
@@ -171,18 +171,26 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: isMobile ? 16 : 24, marginTop: 10 }}>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: isMobile ? 16 : 20, fontWeight: 800, color: 'white' }}>{tracks.length}</div>
-                  <div style={{ fontSize: isMobile ? 10 : 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>TRACKS</div>
+              <div style={{
+                display: 'inline-flex', gap: isMobile ? 4 : 8, marginTop: 10,
+                background: 'rgba(255,255,255,0.06)', borderRadius: 10, padding: isMobile ? '6px 10px' : '8px 14px',
+                backdropFilter: 'blur(8px)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 6, padding: '0 6px' }}>
+                  <Music size={isMobile ? 12 : 14} style={{ color: 'rgba(255,255,255,0.4)' }} />
+                  <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, color: 'white' }}>{tracks.length}</span>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: isMobile ? 16 : 20, fontWeight: 800, color: 'white' }}>{profile.followers_count || 0}</div>
-                  <div style={{ fontSize: isMobile ? 10 : 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>SEGUIDORES</div>
+                <div style={{ width: 1, background: 'rgba(255,255,255,0.1)', margin: '2px 0' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 6, padding: '0 6px' }}>
+                  <Users size={isMobile ? 12 : 14} style={{ color: 'rgba(255,255,255,0.4)' }} />
+                  <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, color: 'white' }}>{profile.followers_count || 0}</span>
+                  <span style={{ fontSize: isMobile ? 10 : 11, color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}>seguidores</span>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: isMobile ? 16 : 20, fontWeight: 800, color: 'white' }}>{profile.following_count || 0}</div>
-                  <div style={{ fontSize: isMobile ? 10 : 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>SIGUIENDO</div>
+                <div style={{ width: 1, background: 'rgba(255,255,255,0.1)', margin: '2px 0' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 6, padding: '0 6px' }}>
+                  <UserPlus size={isMobile ? 12 : 14} style={{ color: 'rgba(255,255,255,0.4)' }} />
+                  <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 800, color: 'white' }}>{profile.following_count || 0}</span>
+                  <span style={{ fontSize: isMobile ? 10 : 11, color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}>siguiendo</span>
                 </div>
               </div>
             </div>
