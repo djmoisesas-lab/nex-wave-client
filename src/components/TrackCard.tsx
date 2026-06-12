@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Track } from '../types';
 import { usePlayerStore, useAuthStore } from '../services/store';
 import { api } from '../services/api';
@@ -93,7 +93,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
         </div>
       )}
 
-      <Link to={`/track/${track.id}`} style={{ flex: 1, minWidth: 0, textDecoration: 'none', color: 'inherit' }}>
+      <div style={{ flex: 1, minWidth: 0, cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); navigate(`/track/${track.id}`); }}>
         <div style={{
           fontWeight: 600, fontSize: 14, marginBottom: 2,
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
@@ -116,7 +116,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
             </>
           )}
         </div>
-      </Link>
+      </div>
 
       <div style={{ display: 'flex', gap: isMobile ? 6 : 8, alignItems: 'center', flexShrink: 0 }}>
         <button

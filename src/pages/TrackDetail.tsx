@@ -72,7 +72,12 @@ export default function TrackDetail() {
     }).finally(() => setLoading(false));
   }, [id]);
 
+  const isInitialTrack = useRef(true);
   useEffect(() => {
+    if (isInitialTrack.current) {
+      isInitialTrack.current = false;
+      return;
+    }
     if (currentTrack && id && id !== currentTrack.id) {
       navigate(`/track/${currentTrack.id}`, { replace: true });
     }
