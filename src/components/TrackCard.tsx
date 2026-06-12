@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Track } from '../types';
 import { usePlayerStore, useAuthStore } from '../services/store';
 import { api } from '../services/api';
 import { useMediaQuery } from '../services/useMediaQuery';
-import Tilt from './Tilt';
 import { Play } from 'lucide-react';
 
 interface Props {
@@ -56,8 +54,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
   };
 
   return (
-    <Link
-      to={`/track/${track.id}`}
+    <div
       className="card track-card-enter"
       style={{
         display: 'flex', alignItems: 'center', gap: isMobile ? 8 : 14, padding: isMobile ? 10 : 14,
@@ -66,16 +63,27 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
         transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
         transform: isHovered ? 'translateY(-1px) scale(1.01)' : undefined,
         boxShadow: isHovered ? `0 0 24px var(--accent-glow), 0 4px 12px rgba(0,0,0,0.3)` : undefined,
+        cursor: 'pointer',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={(e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('button, a')) return;
+        navigate(`/track/${track.id}`);
+      }}
     >
-      <Tilt
-        as="button"
-        onClick={handlePlay}
+      <button
+        onClick={(e) => { e.stopPropagation(); handlePlay(e); }}
         className={`play-btn ${isCurrentTrack ? 'play-btn-active' : 'play-btn-inactive'}`}
-        tiltAmount={8}
-        style={{ width: isMobile ? 40 : 44, height: isMobile ? 40 : 44 }}
+        style={{
+          width: isMobile ? 40 : 44, height: isMobile ? 40 : 44, flexShrink: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+          borderRadius: '50%', border: 'none', cursor: 'pointer',
+          background: isCurrentTrack ? 'var(--accent)' : 'var(--bg4)',
+          color: isCurrentTrack ? '#000' : 'var(--text)',
+        }}
       >
         {isCurrentTrack && isPlaying ? (
           <span style={{ display: 'flex', alignItems: 'center', gap: 2, height: 16 }}>
@@ -86,7 +94,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
         ) : (
           <Play size={16} />
         )}
-      </Tilt>
+      </button>
       {track.cover_url && !isMobile && (
         <div style={{ width: 40, height: 40, borderRadius: 8, overflow: 'hidden', flexShrink: 0 }}>
           <img src={track.cover_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -120,7 +128,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
 
       <div style={{ display: 'flex', gap: isMobile ? 6 : 8, alignItems: 'center', flexShrink: 0 }}>
         <button
-          onClick={handleLike}
+          onClick={(e) => { e.stopPropagation(); handleLike(e); }}
           style={{
             display: 'flex', gap: 3, alignItems: 'center', fontSize: isMobile ? 11 : 12,
             background: 'none', border: 'none', cursor: isAuthenticated ? 'pointer' : 'default',
@@ -148,7 +156,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
         </div>
         {!isMobile && (
           <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (!isAuthenticated) { navigate('/login'); return; } addToQueue(track); }}
+            onClick={(e) => { e.stopPropagation(); if (!isAuthenticated) { navigate('/login'); return; } addToQueue(track); }}
             className="btn btn-secondary btn-sm"
             style={{ whiteSpace: 'nowrap' }}
             title="Añadir a la cola"
@@ -157,6 +165,6 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
           </button>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
