@@ -193,9 +193,6 @@ export default function Profile() {
                   <span style={{ fontSize: isMobile ? 10 : 11, color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}>siguiendo</span>
                 </div>
               </div>
-              <div style={{ marginTop: 8, fontSize: 14, color: 'rgba(255,255,255,0.8)', background: 'rgba(0,0,0,0.3)', padding: '6px 12px', borderRadius: 8 }}>
-                📊 Datos: {tracks.length} tracks · {JSON.stringify(profile.followers_count)} seguidores · {JSON.stringify(profile.following_count)} siguiendo
-              </div>
             </div>
           </div>
 
