@@ -190,7 +190,7 @@ export default function TrackDetail() {
       <div className="card" style={{ padding: 24 }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 16 }}>
           <div>
-            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 4 }}>{track.title}</h1>
+            <h1 style={{ fontSize: isMobile ? 20 : 28, fontWeight: 700, marginBottom: 4 }}>{track.title}</h1>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 14, color: 'var(--text2)', flexWrap: 'wrap' }}>
               <span>{track.artist || track.display_name || track.username}</span>
               {track.genre && <span className="badge">{track.genre}</span>}
@@ -200,11 +200,11 @@ export default function TrackDetail() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 8 }}>
-            <Tilt as="button" className="btn btn-primary" onClick={handlePlayPause} tiltAmount={6} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ display: 'flex', gap: 8, width: isMobile ? '100%' : 'auto' }}>
+            <Tilt as="button" className="btn btn-primary" onClick={handlePlayPause} tiltAmount={6} style={{ display: 'flex', alignItems: 'center', gap: 6, flex: isMobile ? 1 : undefined, justifyContent: 'center' }}>
               {isCurrentTrack && isPlaying ? <><Pause size={14} /> Pausar</> : <><Play size={14} /> Reproducir</>}
             </Tilt>
-            <Tilt as="button" className="btn btn-secondary" onClick={() => { if (!isAuthenticated) { navigate('/login'); return; } addToQueue(track); }} tiltAmount={6}>
+            <Tilt as="button" className="btn btn-secondary" onClick={() => { if (!isAuthenticated) { navigate('/login'); return; } addToQueue(track); }} tiltAmount={6} style={{ flex: isMobile ? 1 : undefined, justifyContent: 'center' }}>
               + Cola
             </Tilt>
           </div>
@@ -240,14 +240,14 @@ export default function TrackDetail() {
             </div>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'flex-start' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <div style={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', gap: 6, flexWrap: 'wrap' }}>
                 <Tilt as="a" href={api.downloadUrl(track.id)} className="btn btn-secondary" download tiltAmount={4} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '6px 10px', fontSize: 12 }}>
                   <Download size={12} /> Descargar
                 </Tilt>
-                <div style={{ display: 'flex', gap: 6 }}>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                   {track.username && (
-                    <Link to={`/profile/${track.user_id}`} className="btn btn-secondary" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, padding: '8px 16px', fontSize: 13 }}>
-                      Ver perfil de {track.display_name || track.username}
+                    <Link to={`/profile/${track.user_id}`} className="btn btn-secondary" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, padding: isMobile ? '6px 10px' : '8px 16px', fontSize: isMobile ? 12 : 13 }}>
+                      Ver perfil
                     </Link>
                   )}
                   {isAuthenticated && user?.id !== track.user_id && (
@@ -272,7 +272,7 @@ export default function TrackDetail() {
                           }
                         }}
                         tiltAmount={4}
-                        style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '8px 16px', fontSize: 13 }}
+                        style={{ display: 'flex', alignItems: 'center', gap: 4, padding: isMobile ? '6px 10px' : '8px 16px', fontSize: isMobile ? 12 : 13 }}
                       >
                         {isFollowing ? <UserCheck size={15} /> : <UserPlus size={15} />}
                         {isFollowing ? 'Siguiendo' : 'Seguir'}
@@ -288,7 +288,7 @@ export default function TrackDetail() {
                             }
                           }}
                           tiltAmount={4}
-                          style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '8px 12px', fontSize: 13 }}
+                          style={{ display: 'flex', alignItems: 'center', gap: 4, padding: isMobile ? '6px 8px' : '8px 12px', fontSize: isMobile ? 11 : 13 }}
                           title={notifyOnUpload ? 'Notificaciones activadas' : 'Activar notificaciones'}
                         >
                           {notifyOnUpload ? <Bell size={15} fill='#f59e0b' style={{ color: '#f59e0b' }} /> : <BellOff size={15} />}
@@ -299,7 +299,7 @@ export default function TrackDetail() {
                 </div>
               </div>
               {isAuthenticated && (
-                <Tilt as="button" className="btn btn-secondary" onClick={() => setShowPlaylistModal(true)} tiltAmount={4} style={{ padding: '8px 16px', fontSize: 13 }}>
+                <Tilt as="button" className="btn btn-secondary" onClick={() => setShowPlaylistModal(true)} tiltAmount={4} style={{ padding: isMobile ? '6px 10px' : '8px 16px', fontSize: isMobile ? 12 : 13 }}>
                   + Playlist
                 </Tilt>
               )}
@@ -321,7 +321,7 @@ export default function TrackDetail() {
                   }
                 }}
                 className="btn btn-secondary"
-                style={{ color: liked ? '#ec4899' : undefined, display: 'flex', alignItems: 'center', gap: 4, padding: '8px 16px', fontSize: 13 }}
+                style={{ color: liked ? '#ec4899' : undefined, display: 'flex', alignItems: 'center', gap: 4, padding: isMobile ? '6px 10px' : '8px 16px', fontSize: isMobile ? 12 : 13 }}
                 tiltAmount={4}
               >
                 <Heart size={15} fill={liked ? 'currentColor' : 'none'} />
@@ -333,7 +333,7 @@ export default function TrackDetail() {
                   className="btn btn-secondary"
                   onClick={() => setShowShareMenu(!showShareMenu)}
                   tiltAmount={4}
-                  style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '8px 16px', fontSize: 13 }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 4, padding: isMobile ? '6px 10px' : '8px 16px', fontSize: isMobile ? 12 : 13 }}
                 >
                   <Link2 size={15} /> Compartir
                 </Tilt>
@@ -360,16 +360,16 @@ export default function TrackDetail() {
               </div>
               {!isOwner && (
                 <Tilt as="button" className="btn btn-secondary" onClick={() => setShowReportModal(true)}
-                  tiltAmount={4} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '8px 16px', fontSize: 13, color: 'var(--text2)' }}>
+                  tiltAmount={4} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: isMobile ? '6px 10px' : '8px 16px', fontSize: isMobile ? 12 : 13, color: 'var(--text2)' }}>
                   <Flag size={14} /> Reportar
                 </Tilt>
               )}
               {isOwner && (
                 <>
-                  <Link to={`/edit-track/${track.id}`} className="btn btn-secondary" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, padding: '8px 16px', fontSize: 13 }}>
+                  <Link to={`/edit-track/${track.id}`} className="btn btn-secondary" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, padding: isMobile ? '6px 10px' : '8px 16px', fontSize: isMobile ? 12 : 13 }}>
                     <Pencil size={15} /> Editar
                   </Link>
-                  <Tilt as="button" className="btn btn-danger" onClick={handleDelete} tiltAmount={4} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '8px 16px', fontSize: 13 }}>
+                  <Tilt as="button" className="btn btn-danger" onClick={handleDelete} tiltAmount={4} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: isMobile ? '6px 10px' : '8px 16px', fontSize: isMobile ? 12 : 13 }}>
                     <Trash2 size={15} /> Eliminar
                   </Tilt>
                 </>

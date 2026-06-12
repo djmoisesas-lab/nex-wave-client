@@ -26,7 +26,7 @@ export default function Layout() {
   const { theme, toggle: toggleTheme } = useTheme();
   const { isAuthenticated, user, logout } = useAuthStore();
   const currentTrack = usePlayerStore((s) => s.currentTrack);
-  const [queueVisible, setQueueVisible] = useState(true);
+  const [queueVisible, setQueueVisible] = useState(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -329,7 +329,12 @@ export default function Layout() {
 
                   <div ref={notifRef} style={{ position: 'relative' }}>
                     <button
-                      onClick={() => setShowNotifs(!showNotifs)}
+                      onClick={() => {
+                        if (!showNotifs) {
+                          handleMarkAllRead();
+                        }
+                        setShowNotifs(!showNotifs);
+                      }}
                       style={{
                         background: 'none', border: 'none', color: 'var(--text2)', cursor: 'pointer',
                         padding: '6px 8px', borderRadius: 'var(--radius-sm)', fontSize: 18,

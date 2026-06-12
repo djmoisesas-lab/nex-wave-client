@@ -204,8 +204,19 @@ export default function PlayerBar() {
       const dir = e.deltaY > 0 ? -step : step;
       setVolume((v) => Math.max(0, Math.min(1, v + dir)));
     };
+    const onClick = (e: MouseEvent) => {
+      const bar = el.querySelector('div') as HTMLElement;
+      if (!bar) return;
+      const rect = bar.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      setVolume(pct);
+    };
     el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
+    el.addEventListener('mousedown', onClick);
+    return () => {
+      el.removeEventListener('wheel', onWheel);
+      el.removeEventListener('mousedown', onClick);
+    };
   }, []);
 
   const formatTime = (t: number) => {
@@ -282,17 +293,17 @@ export default function PlayerBar() {
             as="button"
             onClick={() => prevTrack()}
             className="play-btn play-btn-inactive"
-            style={{ width: isMobile ? 28 : 32, height: isMobile ? 28 : 32, fontSize: 14 }}
+            style={{ width: isMobile ? 34 : 32, height: isMobile ? 34 : 32, fontSize: 14 }}
             tiltAmount={6}
           >
-            <SkipBack size={isMobile ? 14 : 18} />
+            <SkipBack size={isMobile ? 16 : 18} />
           </Tilt>
           <Tilt
             as="button"
             onClick={togglePlay}
             className="play-btn play-btn-active"
             style={{
-              width: isMobile ? 34 : 40, height: isMobile ? 34 : 40,
+              width: isMobile ? 40 : 40, height: isMobile ? 40 : 40,
               transition: 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s',
               transform: isPlaying ? 'scale(1)' : 'scale(0.92)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -305,10 +316,10 @@ export default function PlayerBar() {
             as="button"
             onClick={() => nextTrack()}
             className="play-btn play-btn-inactive"
-            style={{ width: isMobile ? 28 : 32, height: isMobile ? 28 : 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{ width: isMobile ? 34 : 32, height: isMobile ? 34 : 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             tiltAmount={6}
           >
-            <SkipForward size={isMobile ? 14 : 18} />
+            <SkipForward size={isMobile ? 16 : 18} />
           </Tilt>
           <div style={{ minWidth: 0 }}>
             <Link to={`/track/${currentTrack.id}`} style={{
@@ -366,30 +377,29 @@ export default function PlayerBar() {
         </div>
 
         {!isMobile && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span
-              onClick={() => usePlayerStore.getState().toggleMute()}
-              style={{ color: 'var(--text2)', width: 20, textAlign: 'center', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              {volume === 0 ? <VolumeX size={16} /> : volume < 0.5 ? <Volume1 size={16} /> : <Volume2 size={16} />}
-            </span>
-            <div style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}>
-              <div style={{
-                position: 'absolute', top: '50%', left: 0, right: 0,
-                height: 4, transform: 'translateY(-50%)', borderRadius: 4, pointerEvents: 'none',
-                background: `linear-gradient(to right, var(--accent) ${volume * 100}%, var(--bg4) ${volume * 100}%)`,
-              }} />
-              <input
-                ref={volRef}
-                type="range"
-                min={0}
-                max={1}
-                step={0.01}
-                value={volume}
-                onChange={(e) => setVolume(parseFloat(e.target.value))}
-                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', margin: 0, background: 'transparent' }}
-              />
-            </div>
+            <div ref={volRef} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                onClick={() => usePlayerStore.getState().toggleMute()}
+                style={{ color: 'var(--text2)', width: 20, textAlign: 'center', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                {volume === 0 ? <VolumeX size={16} /> : volume < 0.5 ? <Volume1 size={16} /> : <Volume2 size={16} />}
+              </span>
+              <div style={{ position: 'relative', width: 80, minWidth: 60, height: 20 }}>
+                <div style={{
+                  position: 'absolute', top: '50%', left: 0, right: 0,
+                  height: 4, transform: 'translateY(-50%)', borderRadius: 4, pointerEvents: 'none',
+                  background: `linear-gradient(to right, var(--accent) ${volume * 100}%, var(--bg4) ${volume * 100}%)`,
+                }} />
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  value={volume}
+                  onChange={(e) => setVolume(parseFloat(e.target.value))}
+                  style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', margin: 0, background: 'transparent', pointerEvents: 'none' }}
+                />
+              </div>
             <span style={{ fontSize: 10, color: 'var(--text2)', width: 24, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
               {Math.round(volume * 100)}%
             </span>

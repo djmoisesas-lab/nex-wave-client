@@ -75,6 +75,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
         onClick={handlePlay}
         className={`play-btn ${isCurrentTrack ? 'play-btn-active' : 'play-btn-inactive'}`}
         tiltAmount={8}
+        style={{ width: isMobile ? 40 : 44, height: isMobile ? 40 : 44 }}
       >
         {isCurrentTrack && isPlaying ? (
           <span style={{ display: 'flex', alignItems: 'center', gap: 2, height: 16 }}>
