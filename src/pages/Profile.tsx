@@ -172,7 +172,7 @@ export default function Profile() {
               </div>
 
               <div style={{
-                display: 'inline-flex', gap: isMobile ? 4 : 8, marginTop: 10,
+                display: 'inline-flex', gap: isMobile ? 4 : 8, marginTop: 10, flexWrap: 'wrap',
                 background: 'rgba(255,255,255,0.06)', borderRadius: 10, padding: isMobile ? '6px 10px' : '8px 14px',
                 backdropFilter: 'blur(8px)',
               }}>
