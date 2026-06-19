@@ -7,7 +7,7 @@ import { useMediaQuery } from '../services/useMediaQuery';
 import { Notification } from '../types';
 import Tilt from './Tilt';
 import QueuePanel from './QueuePanel';
-import { Bell, Heart, MessageCircle, Sun, Moon, Menu, Search, X, Upload, User, List, LogOut } from 'lucide-react';
+import { Bell, Heart, MessageCircle, Sun, Moon, Menu, Search, X, Upload, User, List, LogOut, Settings } from 'lucide-react';
 import { useTheme } from '../services/theme';
 
 function timeAgo(dateStr: string): string {
@@ -326,15 +326,16 @@ export default function Layout() {
                         </div>
                         {user?.display_name || user?.username}
                       </Link>
-                      <Link to="/settings" style={{
-                        fontSize: 13, color: 'var(--text2)',
-                        padding: '6px 8px', borderRadius: 'var(--radius-sm)',
-                        transition: 'background 0.2s', textDecoration: 'none',
-                      }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
-                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-                        Ajustes
-                      </Link>
+                        <Link to="/settings" style={{
+                          fontSize: 13, color: 'var(--text2)',
+                          padding: '6px 8px', borderRadius: 'var(--radius-sm)',
+                          transition: 'background 0.2s', textDecoration: 'none',
+                          display: 'inline-flex', alignItems: 'center', gap: 4,
+                        }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+                          <Settings size={13} /> Ajustes
+                        </Link>
                     </>
                   )}
 
@@ -503,7 +504,7 @@ export default function Layout() {
                             color: 'var(--text)', textDecoration: 'none', fontSize: 14,
                             borderBottom: '1px solid var(--border)', fontWeight: 500,
                           }}>
-                          Ajustes
+                          <Settings size={18} /> Ajustes
                         </Link>
                         <Link to="/upload" onClick={() => setShowMobileMenu(false)}
                           style={{
