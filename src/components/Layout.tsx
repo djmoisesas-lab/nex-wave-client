@@ -125,7 +125,11 @@ export default function Layout() {
                         onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text2)'}>
                         Mis Sets
                       </Link>
-
+                      <Link to="/playlists" style={{ color: 'var(--text2)', transition: 'color 0.2s' }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text)'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text2)'}>
+                        Playlists
+                      </Link>
                     </>
                   )}
                 </div>
@@ -518,7 +522,14 @@ export default function Layout() {
                           }}>
                           <List size={18} /> Mis Sets
                         </Link>
-
+                        <Link to="/playlists" onClick={() => setShowMobileMenu(false)}
+                          style={{
+                            display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px',
+                            color: 'var(--text)', textDecoration: 'none', fontSize: 14,
+                            borderBottom: '1px solid var(--border)', fontWeight: 500,
+                          }}>
+                          <List size={18} /> Playlists
+                        </Link>
                         <button onClick={() => { logout(); navigate('/'); setShowMobileMenu(false); }}
                           style={{
                             display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px',
