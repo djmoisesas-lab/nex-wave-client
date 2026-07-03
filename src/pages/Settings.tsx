@@ -24,6 +24,11 @@ export default function Settings() {
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [pwSaving, setPwSaving] = useState(false);
+  const [pwMessage, setPwMessage] = useState('');
 
   useEffect(() => {
     if (!isAuthenticated) { navigate('/login'); return; }
@@ -77,6 +82,30 @@ export default function Settings() {
       setMessage('Error: ' + e.message);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      setPwMessage('Error: Las contraseñas no coinciden');
+      return;
+    }
+    if (newPassword.length < 6) {
+      setPwMessage('Error: La nueva contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+    setPwSaving(true);
+    setPwMessage('');
+    try {
+      const r = await api.changePassword(currentPassword, newPassword);
+      setPwMessage(r.message);
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (e: any) {
+      setPwMessage('Error: ' + e.message);
+    } finally {
+      setPwSaving(false);
     }
   };
 
@@ -165,6 +194,28 @@ export default function Settings() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700 }}>Cambiar contraseña</h3>
+            <div className="form-group">
+              <label>Contraseña actual</label>
+              <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} placeholder="••••••••" />
+            </div>
+            <div className="form-group">
+              <label>Nueva contraseña</label>
+              <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Mínimo 6 caracteres" />
+            </div>
+            <div className="form-group">
+              <label>Confirmar nueva contraseña</label>
+              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Repetí la nueva contraseña" />
+            </div>
+            {pwMessage && <div style={{
+              padding: 8, borderRadius: 'var(--radius-sm)', fontSize: 13, textAlign: 'center',
+              background: pwMessage.includes('Error') ? 'rgba(220,38,38,0.1)' : 'rgba(34,197,94,0.1)',
+            }}>{pwMessage}</div>}
+            <button className="btn btn-secondary" onClick={handleChangePassword} disabled={pwSaving} style={{ justifyContent: 'center' }}>
+              {pwSaving ? 'Cambiando...' : 'Cambiar contraseña'}
+            </button>
+          </div>
           <div className="card" style={{ overflow: 'hidden', padding: 0 }}>
             <div style={{
               height: 80,

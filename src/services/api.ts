@@ -301,6 +301,13 @@ export const api = {
     request<Track[]>(`/users/${userId}/recent-plays`),
 
   // Genres
+  // Change Password
+  changePassword: (currentPassword: string, newPassword: string) =>
+    request<{ message: string }>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ currentPassword, newPassword }),
+    }),
+
   // Password Recovery
   forgotPassword: (email: string) =>
     request<{ message: string }>('/auth/forgot-password', {
