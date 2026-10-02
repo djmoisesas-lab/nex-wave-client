@@ -21,7 +21,7 @@ export interface UpdateProfilePayload {
   isPublic?: boolean;
 }
 
-const API_BASE = 'https://nex-wave-server.onrender.com';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 function getToken(): string | null {
   return localStorage.getItem('token');
