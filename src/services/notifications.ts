@@ -8,7 +8,7 @@ let listeners = new Set<Listener>();
 
 function getStreamUrl(): string {
   const token = localStorage.getItem('token');
-  const base = import.meta.env.VITE_API_URL || '/api';
+  const base = '/api';
   return `${base}/notifications/stream?token=${encodeURIComponent(token || '')}`;
 }
 
