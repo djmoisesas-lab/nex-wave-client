@@ -17,7 +17,7 @@ export default function TrackCard({ track, index = 0, onLike }: Props) {
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [liked, setLiked] = useState(track.is_liked);
-  const [likesCount, setLikesCount] = useState(track.likes_count);
+  const [likesCount, setLikesCount] = useState(Number(track.likes_count));
   const [isHovered, setIsHovered] = useState(false);
 
   const isMobile = useMediaQuery('(max-width: 768px)');

@@ -63,7 +63,7 @@ export default function TrackDetail() {
     api.getTrack(id).then((t) => {
       setTrack(t);
       setLiked(t.is_liked);
-      setLikesCount(t.likes_count);
+      setLikesCount(Number(t.likes_count));
       if (isAuthenticated && t.user_id !== user?.id) {
         api.checkFollow(t.user_id).then((r) => { setIsFollowing(r.following); setNotifyOnUpload(r.notify_on_upload); }).catch(() => {});
       }
